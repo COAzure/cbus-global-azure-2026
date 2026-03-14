@@ -86,6 +86,34 @@ speakers: string[] (speaker slugs)
 - Speaker pages: `[slug].astro` derives params from `entry.id.replace(/\.md$/, '')`
 - Photo fallback: Missing photos show initials-based placeholder instead of failing
 
+### 3. Conference Naming Convention: "Global Azure Columbus"
+**Date:** 2026-03-14  
+**Reviewed by:** Han  
+**Status:** ✅ Implemented (Branding Complete)
+
+**Decision:** All user-facing site content standardizes to "Global Azure Columbus" (not "Columbus Global Azure").
+
+**Rationale:**
+- Consistent conference naming across all public-facing interfaces
+- Clarity for event recognition and attendee communication
+- Matches official event branding standards
+
+**Implementation:**
+- Updated 12 occurrences across 6 core files:
+  - Page titles and meta descriptions in layouts, pages, and components
+  - Homepage branding and lede text
+  - Agenda and speaker page headers
+- Year (2026) preserved in all contexts where present
+- No functional or routing changes
+
+**Files Updated:**
+- `src/layouts/Layout.astro` — Page title/meta defaults
+- `src/components/Welcome.astro` — Brand messaging
+- `src/pages/index.astro` — Homepage
+- `src/pages/speakers/index.astro` — Speaker listing
+- `src/pages/speakers/[slug].astro` — Speaker detail template
+- `src/pages/agenda/index.astro` — Agenda page
+
 ---
 
 ## Governance
