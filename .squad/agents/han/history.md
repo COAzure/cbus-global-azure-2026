@@ -58,3 +58,5 @@ Han owns Astro UI, layouts, and page templates.
 - CSS border-radius on `.event-logo` aligns logo aesthetic with the card-based design system used elsewhere on the site; 24px radius matches existing card rounding.
 
 - Added Discord link to the host card (Welcome.astro, line 111–113) with a 💬 emoji prefix for visual scannability. The link uses `rel="noopener noreferrer"` for security best practices and opens in a new tab. Placed as a second paragraph after the existing Meetup link to maintain consistent styling and card layout.
+
+- Speaker photo fallback pattern: `SpeakerPortrait.astro` checks file existence with `existsSync()` at build time. When a speaker's photo file is missing from `public/speakers/`, the component renders initials (derived from speaker name) in a circular badge above the text "Photo coming soon". The placeholder uses a gradient background and soft blue styling consistent with site design. This keeps the page rendering cleanly even when photos are not yet uploaded.

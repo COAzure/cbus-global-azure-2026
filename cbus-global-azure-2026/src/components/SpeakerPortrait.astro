@@ -3,92 +3,92 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 
 interface Props {
-name: string;
-photo: string;
-variant?: 'card' | 'detail';
+  name: string;
+  photo: string;
+  variant?: 'card' | 'detail';
 }
 
 const { name, photo, variant = 'card' } = Astro.props;
 const photoUrl = `${import.meta.env.BASE_URL}speakers/${photo}`;
 const initials = name
-.split(/\s+/)
-.slice(0, 2)
-.map((part) => part.charAt(0).toUpperCase())
-.join('');
+  .split(/\s+/)
+  .slice(0, 2)
+  .map((part) => part.charAt(0).toUpperCase())
+  .join('');
 const hasPhoto = existsSync(path.resolve(process.cwd(), 'public', 'speakers', photo));
 ---
 
 <div class:list={['portrait', variant, !hasPhoto && 'missing']}>
-{hasPhoto ? (
-<img
-src={photoUrl}
-alt={`Portrait of ${name}`}
-loading={variant === 'card' ? 'lazy' : 'eager'}
-/>
-) : (
-<div class="placeholder" aria-label={`${name} photo coming soon`} role="img">
-<span>{initials}</span>
-<small>Photo coming soon</small>
-</div>
-)}
+  {hasPhoto ? (
+    <img
+      src={photoUrl}
+      alt={`Portrait of ${name}`}
+      loading={variant === 'card' ? 'lazy' : 'eager'}
+    />
+  ) : (
+    <div class="placeholder" aria-label={`${name} photo coming soon`} role="img">
+      <span>{initials}</span>
+      <small>Photo coming soon</small>
+    </div>
+  )}
 </div>
 
 <style>
-.portrait {
-border-radius: 24px;
-overflow: hidden;
-background: linear-gradient(135deg, #dbeafe, #bfdbfe 55%, #93c5fd);
-box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
-}
+  .portrait {
+    border-radius: 24px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe 55%, #93c5fd);
+    box-shadow: 0 24px 50px rgba(15, 23, 42, 0.12);
+  }
 
-.portrait.card {
-aspect-ratio: 4 / 5;
-}
+  .portrait.card {
+    aspect-ratio: 4 / 5;
+  }
 
-.portrait.detail {
-aspect-ratio: 4 / 5;
-max-width: 360px;
-width: 100%;
-}
+  .portrait.detail {
+    aspect-ratio: 4 / 5;
+    max-width: 360px;
+    width: 100%;
+  }
 
-.portrait img,
-.placeholder {
-height: 100%;
-width: 100%;
-}
+  .portrait img,
+  .placeholder {
+    height: 100%;
+    width: 100%;
+  }
 
-.portrait img {
-object-fit: cover;
-}
+  .portrait img {
+    object-fit: cover;
+  }
 
-.placeholder {
-display: grid;
-place-items: center;
-padding: 2rem;
-text-align: center;
-color: #0f172a;
-background:
-radial-gradient(circle at top, rgba(255, 255, 255, 0.85), transparent 50%),
-linear-gradient(160deg, rgba(255, 255, 255, 0.7), rgba(191, 219, 254, 0.9));
-}
+  .placeholder {
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    text-align: center;
+    color: #0f172a;
+    background:
+      radial-gradient(circle at top, rgba(255, 255, 255, 0.85), transparent 50%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.7), rgba(191, 219, 254, 0.9));
+  }
 
-.placeholder span {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-width: 4.5rem;
-height: 4.5rem;
-border-radius: 999px;
-background: rgba(15, 23, 42, 0.08);
-font-size: 1.5rem;
-font-weight: 700;
-letter-spacing: 0.08em;
-}
+  .placeholder span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.5rem;
+    height: 4.5rem;
+    border-radius: 999px;
+    background: rgba(15, 23, 42, 0.08);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
 
-.placeholder small {
-display: block;
-margin-top: 0.85rem;
-font-size: 0.95rem;
-font-weight: 600;
-}
+  .placeholder small {
+    display: block;
+    margin-top: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
 </style>

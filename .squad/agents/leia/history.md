@@ -103,5 +103,20 @@ Michael made several direct changes to the codebase:
 ✅ Agenda session IDs render correctly
 ✅ Homepage links to agenda with hash anchors work as expected
 
-**Conclusion:**
-All changes are production-ready and align with established architecture patterns. Michael's direct implementation demonstrates strong understanding of the Astro content collections model and component composition strategy.
+## Audit (2026-03-14)
+
+**Task:** Audit all agent history.md files for accuracy against current project state.
+
+**Finding:** 1 of 6 histories required correction. Han's history inaccurately described speaker photo fallback as a `default-speaker.svg` file; actual implementation uses initials-based placeholder (SpeakerPortrait.astro lines 28–33). Corrected Han's history to reflect runtime initials rendering with gradient badge background.
+
+**Result:** ✅ All 6 histories now accurate and aligned with project ground truth. Summary report filed to `.squad/decisions/inbox/leia-history-audit.md`.
+
+**Key Verified Facts:**
+- Astro 6 config location: `src/content.config.ts` ✅
+- Content paths: `src/content/speakers/`, `src/content/agenda/` ✅
+- Speaker photos: checked at build time via `existsSync()`, fallback to initials badge ✅
+- Homepage schedule table: FIXED_ROWS hardcoded, merged with dynamic sessions ✅
+- Favicon: SVG blue cloud + "A" ✅
+- Blog field: optional in schema, conditionally rendered ✅
+- 5 speakers, 6 agenda sessions (2 placeholders) ✅
+
