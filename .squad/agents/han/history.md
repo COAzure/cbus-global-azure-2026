@@ -15,6 +15,8 @@ Han owns Astro UI, layouts, and page templates.
 
 ## Learnings
 
+- **SpeakerPortrait img gap fix (2026-03-14):** The `<img>` inside `.portrait` was sized with `height: 100%; width: 100%`, which doesn't resolve reliably when the parent's height comes from `aspect-ratio` alone inside a CSS grid column (`minmax(140px, 180px)`). This caused the image to be shorter than the container, exposing the `#f0f7ff` background behind the inset border. Fix: switched the `<img>` to `position: absolute; inset: 0; width: 100%; height: 100%` (`.portrait` was already `position: relative; overflow: hidden`). The placeholder `div` kept percentage sizing since it's a flex/grid child that fills correctly. This is the safe pattern any time an image must fill an `aspect-ratio`-sized container inside a grid.
+
 - Blog links are now shown on homepage speaker cards. Added `blog?: string` to `FeaturedSpeaker` interface in both `Welcome.astro` and `index.astro`, and passed `blog={speaker.blog}` to `SpeakerSocialLinks` in the homepage speaker grid. The `.map()` in `index.astro` already spread `speaker.data` so no map change was needed — only the interface and prop wiring. Note: Decision 7b previously stated homepage cards intentionally omitted blog; this was reversed by Michael S. Collier's request.
 
 - The homepage, agenda, and speaker pages are the primary user-facing flows.

@@ -65,15 +65,18 @@ const hasPhoto = existsSync(path.resolve(process.cwd(), 'public', 'speakers', ph
     width: 100%;
   }
 
-  .portrait img,
+  .portrait img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
   .placeholder {
     height: 100%;
     width: 100%;
-  }
-
-  .portrait img {
-    display: block;
-    object-fit: cover;
   }
 
   .placeholder {
