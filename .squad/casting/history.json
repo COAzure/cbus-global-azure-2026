@@ -1,0 +1,15 @@
+[
+  {
+    "assignment_id": "global-azure-2026-initial-star-wars",
+    "assigned_at": "2026-03-14T04:41:13Z",
+    "universe": "Star Wars",
+    "members": [
+      "Leia",
+      "Han",
+      "Chewie",
+      "Luke",
+      "Wedge"
+    ],
+    "project": "global-azure-2026"
+  }
+]
