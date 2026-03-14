@@ -56,3 +56,5 @@ Han owns Astro UI, layouts, and page templates.
 - Table styling uses two row classes (`row-session`, `row-fixed`) to visually differentiate conference sessions from schedule anchors — fixed rows get muted gray text so they read as structural dividers rather than sessions.
 - Logo placement inside the hero requires clear brand hierarchy: logo at top (primary signal) → eyebrow (secondary date context) → h1 (tagline at body-copy scale). The visual reduction works when paired with semantic `<h1>` retention.
 - CSS border-radius on `.event-logo` aligns logo aesthetic with the card-based design system used elsewhere on the site; 24px radius matches existing card rounding.
+
+- Added Discord link to the host card (Welcome.astro, line 111–113) with a 💬 emoji prefix for visual scannability. The link uses `rel="noopener noreferrer"` for security best practices and opens in a new tab. Placed as a second paragraph after the existing Meetup link to maintain consistent styling and card layout.
