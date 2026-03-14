@@ -347,6 +347,90 @@ blog: "https://www.shawnewallace.com/"
 ✅ Homepage schedule links to `/agenda/#session-id`  
 ✅ Favicon files valid (SVG and ICO)
 
+### 9. Default Speaker Image: SVG Fallback
+**Date:** 2026-03-14  
+**Author:** Han  
+**Status:** ✅ Implemented
+
+**Decision:** Replaced CSS initials placeholder in `SpeakerPortrait.astro` with a real SVG default image (`public/speakers/default-speaker.svg`).
+
+**Design:**
+- Format: Inline SVG (static file, no JS, renders instantly)
+- Dimensions: `viewBox="0 0 400 500"` matching 4:5 portrait aspect ratio
+- Background gradient: `#dbeafe → #bfdbfe → #93c5fd` (Tailwind blue-100 to blue-300)
+- Silhouette: Circle (head) + narrow rect (neck) + ellipse (shoulders/torso) with gradient fill `#60a5fa → #3b82f6`
+- No text: Purely visual, works in any locale
+
+**Rationale:** SVG fallback is polished, conference-appropriate, zero-weight (< 1 KB), accessible, and consistent with site's blue palette.
+
+**Component Impact:**
+- `SpeakerPortrait.astro` always renders `<img>` tag; src switches based on `hasPhoto`
+- Removed: initials derivation, `.placeholder` div, `.missing` class, placeholder CSS rules
+- Retained: `.portrait` gradient background
+
+**Files Updated:**
+- `public/speakers/default-speaker.svg` — New SVG fallback
+- `src/components/SpeakerPortrait.astro` — Img-only rendering
+
+---
+
+### 10. Discord Link: Host Card Community Connection
+**Date:** 2026-03-14  
+**Author:** Han  
+**Requested by:** Michael S. Collier  
+**Status:** ✅ Implemented
+
+**Decision:** Add a Discord link to the host card in the Welcome component alongside the existing Meetup link.
+
+**Implementation:** New paragraph in `src/components/Welcome.astro` (lines 111–113):
+```astro
+<p>
+  💬 Join the <a href="https://discord.gg/HjkFNJUG" target="_blank" rel="noopener noreferrer">Azure Columbus community on Discord</a>.
+</p>
+```
+
+**Design Rationale:**
+- 💬 emoji prefix provides visual scannability without UI complexity
+- Placed as second paragraph maintains consistent styling with Meetup link
+- `rel="noopener noreferrer"` and `target="_blank"` follow security best practices
+- Concise wording mirrors Meetup link tone
+
+**Files Updated:**
+- `src/components/Welcome.astro` — Added Discord link paragraph
+
+---
+
+### 11. History Audit Report: All 6 Agents Verified
+**Date:** 2026-03-14  
+**Author:** Leia (Lead)  
+**Status:** ✅ Complete
+
+**Summary:** Audited all 6 agent history.md files against current project state. Found 1 inaccuracy (Han), fixed; 5 verified accurate.
+
+**Audit Results:**
+
+| Agent | Result | Finding |
+|-------|--------|---------|
+| Leia | ✅ Accurate | Excellent documentation of decisions and build verification |
+| Han | ⚠️ Updated | Speaker photo fallback: claimed SVG file didn't exist; fixed to reflect initials + "Photo coming soon" pattern |
+| Chewie | ✅ Accurate | Correctly identifies Astro 6 location and content structure |
+| Luke | ✅ Accurate | Appropriately minimal for editorial role; markdown insights sound |
+| Wedge | ✅ Accurate | Strong validation-focused coverage; correctly notes photo hard-required in schema |
+| Scribe | ✅ Accurate | Appropriately scoped for orchestration role |
+
+**Han's Correction:** Speaker photo fallback is `SpeakerPortrait.astro` runtime initials-based placeholder (lines 28–33), not SVG file. `existsSync()` used at build time, not runtime. Default shows initials in gradient badge + "Photo coming soon" text.
+
+**Root Cause:** Documented from incomplete information or intended-but-not-implemented feature.
+
+**Project Ground Truth Verified:**
+- Stack: Astro 6.0.4, TypeScript strict, Markdown content collections
+- 5 speaker content files, 6 agenda sessions (2 placeholders)
+- All implemented features align with decisions.md
+- No stale decisions or superseded patterns (except speaker photo, now corrected)
+
+**Files Updated:**
+- `.squad/agents/han/history.md` — Fixed speaker photo fallback description
+
 ---
 
 ## Governance
