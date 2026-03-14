@@ -12,6 +12,7 @@ How to decide who handles what.
 | Written content and editorial structure | Luke | Bio copy, agenda copy, markdown authoring patterns, contributor docs |
 | Code review | Leia | Review PRs, check quality, suggest improvements |
 | Testing | Wedge | Write tests, find edge cases, verify fixes |
+| Visual design, UX, color, typography, accessibility | Padmé | Design direction, layout critique, visual specs, favicon/icon work |
 | Scope & priorities | Leia | What to build next, trade-offs, decisions |
 | Session logging | Scribe | Automatic — never needs routing |
 
@@ -25,6 +26,7 @@ How to decide who handles what.
 | `squad:chewie` | Pick up content model and Markdown pipeline work | Chewie |
 | `squad:luke` | Pick up editorial content and docs work | Luke |
 | `squad:wedge` | Pick up testing and verification work | Wedge |
+| `squad:padme` | Pick up visual design and UX work | Padmé |
 
 ## Rules
 
