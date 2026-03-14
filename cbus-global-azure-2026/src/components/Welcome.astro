@@ -8,6 +8,7 @@ interface SessionSpeaker {
 }
 
 interface AgendaSession {
+  id: string;
   title: string;
   timeLabel: string;
   timeMs: number;
@@ -22,6 +23,7 @@ interface FeaturedSpeaker {
   photo: string;
   linkedin: string;
   github: string;
+  blog?: string;
 }
 
 interface Props {
@@ -49,12 +51,20 @@ interface ScheduleRow {
   room: string;
   speakers: SessionSpeaker[];
   isFixed: boolean;
+  id?: string;
 }
 
 const FIXED_ROWS: ScheduleRow[] = [
-  { timeMs: new Date('2026-04-18T09:30:00-04:00').getTime(), timeLabel: '9:30 AM', title: 'Doors Open', room: 'Lobby', speakers: [], isFixed: true },
-  { timeMs: new Date('2026-04-18T12:00:00-04:00').getTime(), timeLabel: '12:00 PM', title: 'Lunch', room: 'Dining Area', speakers: [], isFixed: true },
-  { timeMs: new Date('2026-04-18T16:00:00-04:00').getTime(), timeLabel: '4:00 PM', title: 'End of Day', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T09:30:00-04:00').getTime(), timeLabel: '9:30 AM', title: 'Doors Open / Registration / Networking', room: 'Lobby', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T10:00:00-04:00').getTime(), timeLabel: '10:00 AM', title: 'Opening Remarks', room: 'Main Stage', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T10:50:00-04:00').getTime(), timeLabel: '10:50 AM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T11:40:00-04:00').getTime(), timeLabel: '11:40 AM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T12:30:00-04:00').getTime(), timeLabel: '12:30 PM', title: 'Lunch', room: 'Dining Area', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T13:40:00-04:00').getTime(), timeLabel: '1:40 PM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T14:30:00-04:00').getTime(), timeLabel: '2:30 PM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T15:20:00-04:00').getTime(), timeLabel: '3:20 PM', title: 'Panel Discussion / Buffer', room: 'Main Stage', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T15:50:00-04:00').getTime(), timeLabel: '3:50 PM', title: 'Closing Remarks', room: 'Main Stage', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T16:00:00-04:00').getTime(), timeLabel: '4:00 PM', title: 'Go Home', room: '', speakers: [], isFixed: true },
 ];
 
 const scheduleRows: ScheduleRow[] = [
@@ -96,7 +106,10 @@ const scheduleRows: ScheduleRow[] = [
             <p class="panel-label">Hosted by</p>
             <p class="host-title">Azure Columbus</p>
             <p>
-              Global Azure Columbus is hosted by Azure Columbus, your local Azure user group.
+              Global Azure Columbus is hosted by <a href="https://www.meetup.com/central-ohio-azure/" target="_blank" rel="noopener noreferrer">Azure Columbus</a>, your local Azure user group.
+            </p>
+            <p>
+              💬 Join the <a href="https://discord.gg/w2F9KS3HCs" target="_blank" rel="noopener noreferrer">Azure Columbus community on Discord</a>.
             </p>
           </div>
         </div>
@@ -163,7 +176,11 @@ const scheduleRows: ScheduleRow[] = [
               <tr class={row.isFixed ? 'row-fixed' : 'row-session'}>
                 <td class="col-time">{row.timeLabel}</td>
                 <td class="col-title">
-                  <span class="row-title">{row.title}</span>
+                  {!row.isFixed && row.id ? (
+                    <a class="row-title session-link" href={`${import.meta.env.BASE_URL}agenda/#${row.id}`}>{row.title}</a>
+                  ) : (
+                    <span class="row-title">{row.title}</span>
+                  )}
                   {!row.isFixed && row.speakers.length > 0 && (
                     <ul class="speaker-chips" aria-label={`${row.title} speakers`}>
                       {row.speakers.map((speaker) => (
@@ -210,6 +227,7 @@ const scheduleRows: ScheduleRow[] = [
                 <SpeakerSocialLinks
                   linkedin={speaker.linkedin}
                   github={speaker.github}
+                  blog={speaker.blog}
                   compact
                 />
               </div>
@@ -583,6 +601,16 @@ const scheduleRows: ScheduleRow[] = [
   .row-session .row-title {
     font-weight: 700;
     color: #0f2942;
+  }
+
+  a.row-title.session-link {
+    color: #1d4ed8;
+    text-decoration: none;
+  }
+
+  a.row-title.session-link:hover,
+  a.row-title.session-link:focus-visible {
+    text-decoration: underline;
   }
 
   .row-fixed {

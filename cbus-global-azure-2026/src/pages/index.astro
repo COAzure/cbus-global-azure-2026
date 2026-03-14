@@ -9,6 +9,7 @@ interface SessionSpeaker {
 }
 
 interface AgendaSession {
+  id: string;
   title: string;
   timeLabel: string;
   timeMs: number;
@@ -23,6 +24,7 @@ interface FeaturedSpeaker {
   photo: string;
   linkedin: string;
   github: string;
+  blog?: string;
 }
 
 const agendaEntries = (await getCollection('agenda')).sort(
@@ -55,6 +57,7 @@ const agendaSessions: AgendaSession[] = await Promise.all(
     const dt = new Date(entry.data.time);
 
     return {
+      id: entry.id.replace(/\.md$/, ''),
       title: entry.data.title,
       timeLabel: timeFormatter.format(dt),
       timeMs: dt.getTime(),

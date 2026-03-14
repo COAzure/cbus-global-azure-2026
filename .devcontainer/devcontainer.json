@@ -4,8 +4,16 @@
   "features": {
     "ghcr.io/devcontainers/features/github-cli": { "version": "latest" },
     "ghcr.io/devcontainers/features/azure-cli": { "version": "latest" },
-    "ghcr.io/devcontainers/features/copilot-cli:1": {}
+    "ghcr.io/devcontainers/features/copilot-cli:1": {},
+    "ghcr.io/devcontainers/features/python": { "version": "latest" }
   },
-  "postCreateCommand": "npm install",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "csharpfritz.squadui"
+      ]
+    }
+  },
+  "postCreateCommand": "npm install --prefix cbus-global-azure-2026",
   "forwardPorts": [4321]
 }

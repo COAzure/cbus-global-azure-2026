@@ -13,6 +13,7 @@ const speakers = defineCollection({
       .regex(/^[^/]+$/, 'Use a filename from public/speakers/'),
     linkedin: z.url(),
     github: z.url(),
+    blog: z.url().optional(),
   }),
 });
 

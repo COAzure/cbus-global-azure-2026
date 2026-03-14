@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntries } from 'astro:content';
+import { getCollection, getEntries, render } from 'astro:content';
 import AgendaSessionCard from '../../components/AgendaSessionCard.astro';
 import Layout from '../../layouts/Layout.astro';
 
@@ -16,7 +16,8 @@ interface SessionItem {
   timeLabel: string;
   room: string;
   speakers: SessionSpeaker[];
-  description: string;
+  hasDescription: boolean;
+  Content: Awaited<ReturnType<typeof render>>['Content'];
 }
 
 const agendaEntries = (await getCollection('agenda')).sort(
@@ -40,9 +41,10 @@ const sessions: SessionItem[] = await Promise.all(
   agendaEntries.map(async (entry) => {
     const startTime = new Date(entry.data.time);
     const speakers = await getEntries(entry.data.speakers);
+    const { Content } = await render(entry);
 
     return {
-      id: entry.id,
+      id: entry.id.replace(/\.md$/, ''),
       dayKey: entry.data.time.slice(0, 10),
       dayLabel: dateFormatter.format(startTime),
       title: entry.data.title,
@@ -52,7 +54,8 @@ const sessions: SessionItem[] = await Promise.all(
         name: speaker.data.name,
         slug: speaker.id.replace(/\.md$/, ''),
       })),
-      description: entry.body.trim(),
+      hasDescription: entry.body.trim().length > 0,
+      Content,
     };
   }),
 );
@@ -107,12 +110,19 @@ const sessionsByDay = Array.from(
             <div class="session-list">
               {day.sessions.map((session) => (
                 <AgendaSessionCard
+                  id={session.id}
                   title={session.title}
                   timeLabel={session.timeLabel}
                   room={session.room}
                   speakers={session.speakers}
-                  description={session.description}
-                />
+                  hasDescription={session.hasDescription}
+                >
+                  {session.hasDescription && (
+                    <Fragment slot="description">
+                      <session.Content />
+                    </Fragment>
+                  )}
+                </AgendaSessionCard>
               ))}
             </div>
           </section>

@@ -9,14 +9,15 @@ interface Props {
   timeLabel: string;
   room: string;
   speakers?: SpeakerLink[];
-  description?: string;
+  hasDescription?: boolean;
+  id?: string;
 }
 
-const { title, timeLabel, room, speakers = [], description } = Astro.props;
+const { title, timeLabel, room, speakers = [], hasDescription = false, id } = Astro.props;
 const hasSpeakers = speakers.length > 0;
 ---
 
-<article class="session-card">
+<article class="session-card" id={id}>
   <div class="meta" aria-label={`Session starts at ${timeLabel}`}>
     <p class="meta-label">Start time</p>
     <p class="time">{timeLabel}</p>
@@ -26,7 +27,11 @@ const hasSpeakers = speakers.length > 0;
   <div class="content">
     <h3>{title}</h3>
 
-    {description && <p class="description">{description}</p>}
+    {hasDescription && (
+      <div class="description">
+        <slot name="description" />
+      </div>
+    )}
 
     {hasSpeakers && (
       <div class="speakers">
@@ -75,8 +80,7 @@ const hasSpeakers = speakers.length > 0;
 
   .time,
   .room,
-  h3,
-  .description {
+  h3 {
     margin: 0;
   }
 
@@ -102,7 +106,41 @@ const hasSpeakers = speakers.length > 0;
   }
 
   .description {
+    display: grid;
+    gap: 0.75rem;
     color: #35506b;
+  }
+
+  .description :global(h2),
+  .description :global(h3),
+  .description :global(h4),
+  .description :global(h5),
+  .description :global(h6),
+  .description :global(p),
+  .description :global(ul),
+  .description :global(ol) {
+    margin: 0;
+  }
+
+  .description :global(ul),
+  .description :global(ol) {
+    padding-left: 1.25rem;
+  }
+
+  .description :global(li + li) {
+    margin-top: 0.35rem;
+  }
+
+  .description :global(a) {
+    color: #1d4ed8;
+    font-weight: 600;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.14em;
+  }
+
+  .description :global(a:hover),
+  .description :global(a:focus-visible) {
+    color: #1e40af;
   }
 
   .speakers {

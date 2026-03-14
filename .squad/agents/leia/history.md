@@ -53,3 +53,70 @@ Leia is the lead for planning, architecture, and review.
 
 **Decision documented in:**
 `.squad/decisions/inbox/leia-project-structure-review.md` (awaiting team consensus)
+
+### 2026-03-14: Code Review — Blog Links, Favicon Redesign, and Agenda Anchors
+
+**Context:**
+Michael made several direct changes to the codebase:
+1. Bug fix: TypeError on speakers with missing body content
+2. New feature: Optional blog link support for speakers
+3. New feature: Favicon redesign (blue cloud + white "A")
+4. New feature: Homepage agenda table links to full agenda page with hash anchors
+
+**Review Findings:**
+
+**Bug Fix (speaker body handling):**
+- **File:** `src/pages/speakers/[slug].astro` line 18
+- **Change:** `speaker.body.trim()` → `(speaker.body ?? '').trim()`
+- **Assessment:** ✅ Correct. Nullish coalescing handles speakers with no body content gracefully. Prevents runtime TypeError when optional body is absent.
+
+**Blog Link Feature (end-to-end implementation):**
+- **Schema:** `src/content.config.ts` adds `blog: z.url().optional()` to speakers schema ✅
+- **Component:** `SpeakerSocialLinks.astro` accepts optional `blog` prop, conditionally renders "Blog" link ✅
+- **Card Component:** `SpeakerCard.astro` accepts and forwards `blog` prop to SpeakerSocialLinks ✅
+- **Detail Page:** `src/pages/speakers/[slug].astro` passes `speaker.data.blog` to SpeakerSocialLinks ✅
+- **Content Example:** `shawn-wallace.md` includes `blog:` field in frontmatter ✅
+- **Conditional Rendering:** Blog link only appears when present; speakers without blog field (e.g., chad-thomas.md) show no Blog link ✅
+- **Assessment:** Complete and correct end-to-end implementation. Schema validation ensures blog URLs are well-formed. Conditional rendering is clean and efficient using array spread pattern.
+
+**Favicon Redesign:**
+- **SVG:** `public/favicon.svg` — 128×128 viewBox with blue (#2563eb) cloud using clipPath (3 circles + rect base), white "A" rendered as text element
+- **ICO:** `public/favicon.ico` — Multi-resolution (16×16, 32×32, 48×48) ICO bundle
+- **Assessment:** ✅ Well-formed SVG with proper namespace, viewBox, and clipPath structure. Color matches brand blue (#2563eb). ICO verified as valid MS Windows icon resource with PNG data. Favicon effectively represents Azure theme.
+
+**Agenda Anchor Linking:**
+- **Component:** `AgendaSessionCard.astro` accepts optional `id` prop, applies to `<article>` element as hash anchor target ✅
+- **Agenda Page:** `src/pages/agenda/index.astro` passes `id={session.id}` (with `.md` extension stripped) to each AgendaSessionCard ✅
+- **Homepage:** `src/pages/index.astro` adds `id` field to AgendaSession interface and mapping ✅
+- **Welcome Component:** `src/components/Welcome.astro` renders session titles as `<a>` links to `/agenda/#session-id` for sessions; fixed rows (Doors Open, Lunch, End of Day) remain plain text ✅
+- **Verification:** Build output confirms IDs render correctly (e.g., `id="opening-keynote"`, `id="agentic-first-with-github-copilot"`); homepage links properly formatted as `/agenda/#opening-keynote` ✅
+- **Assessment:** Solid implementation. Hash anchor strategy enables deep linking from homepage schedule to specific sessions on agenda page. Fixed rows correctly excluded from linking. ID derivation from filename maintains consistency.
+
+**Concerns & Recommendations:**
+1. **Blog field on homepage speaker cards:** Homepage speaker cards don't display blog links. The `FeaturedSpeaker` interface in `index.astro` doesn't include `blog` field, and `Welcome.astro` doesn't pass it to SpeakerSocialLinks. This appears intentional (compact homepage cards vs. comprehensive detail pages), creating a useful information hierarchy. If this is the desired pattern, it's working correctly. If blog links should appear on homepage too, add `blog?: string` to FeaturedSpeaker interface and pass to SpeakerSocialLinks. **Recommendation:** Document this as an intentional pattern or align homepage with detail page behavior.
+2. **No other concerns identified.** All changes are coherent, well-implemented, and improve the user experience.
+
+**Build Verification:**
+✅ Clean build, 8 pages generated successfully
+✅ Blog link renders correctly for Shawn Wallace
+✅ No blog link for speakers without blog field (Chad Thomas)
+✅ Agenda session IDs render correctly
+✅ Homepage links to agenda with hash anchors work as expected
+
+## Audit (2026-03-14)
+
+**Task:** Audit all agent history.md files for accuracy against current project state.
+
+**Finding:** 1 of 6 histories required correction. Han's history inaccurately described speaker photo fallback as a `default-speaker.svg` file; actual implementation uses initials-based placeholder (SpeakerPortrait.astro lines 28–33). Corrected Han's history to reflect runtime initials rendering with gradient badge background.
+
+**Result:** ✅ All 6 histories now accurate and aligned with project ground truth. Summary report filed to `.squad/decisions/inbox/leia-history-audit.md`.
+
+**Key Verified Facts:**
+- Astro 6 config location: `src/content.config.ts` ✅
+- Content paths: `src/content/speakers/`, `src/content/agenda/` ✅
+- Speaker photos: checked at build time via `existsSync()`, fallback to initials badge ✅
+- Homepage schedule table: FIXED_ROWS hardcoded, merged with dynamic sessions ✅
+- Favicon: SVG blue cloud + "A" ✅
+- Blog field: optional in schema, conditionally rendered ✅
+- 5 speakers, 6 agenda sessions (2 placeholders) ✅
+

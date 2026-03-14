@@ -2,13 +2,15 @@
 interface Props {
 linkedin: string;
 github: string;
+blog?: string;
 compact?: boolean;
 }
 
-const { linkedin, github, compact = false } = Astro.props;
+const { linkedin, github, blog, compact = false } = Astro.props;
 const links = [
 { href: linkedin, label: 'LinkedIn' },
 { href: github, label: 'GitHub' },
+...(blog ? [{ href: blog, label: 'Blog' }] : []),
 ];
 ---
 

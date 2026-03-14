@@ -15,6 +15,8 @@ Han owns Astro UI, layouts, and page templates.
 
 ## Learnings
 
+- Blog links are now shown on homepage speaker cards. Added `blog?: string` to `FeaturedSpeaker` interface in both `Welcome.astro` and `index.astro`, and passed `blog={speaker.blog}` to `SpeakerSocialLinks` in the homepage speaker grid. The `.map()` in `index.astro` already spread `speaker.data` so no map change was needed — only the interface and prop wiring. Note: Decision 7b previously stated homepage cards intentionally omitted blog; this was reversed by Michael S. Collier's request.
+
 - The homepage, agenda, and speaker pages are the primary user-facing flows.
 - The site should be easy to maintain as conference content changes.
 - Speaker pages live at `cbus-global-azure-2026/src/pages/speakers/index.astro` and `cbus-global-azure-2026/src/pages/speakers/[slug].astro`, both driven from `getCollection('speakers')`.
@@ -54,3 +56,7 @@ Han owns Astro UI, layouts, and page templates.
 - Table styling uses two row classes (`row-session`, `row-fixed`) to visually differentiate conference sessions from schedule anchors — fixed rows get muted gray text so they read as structural dividers rather than sessions.
 - Logo placement inside the hero requires clear brand hierarchy: logo at top (primary signal) → eyebrow (secondary date context) → h1 (tagline at body-copy scale). The visual reduction works when paired with semantic `<h1>` retention.
 - CSS border-radius on `.event-logo` aligns logo aesthetic with the card-based design system used elsewhere on the site; 24px radius matches existing card rounding.
+
+- Added Discord link to the host card (Welcome.astro, line 111–113) with a 💬 emoji prefix for visual scannability. The link uses `rel="noopener noreferrer"` for security best practices and opens in a new tab. Placed as a second paragraph after the existing Meetup link to maintain consistent styling and card layout.
+
+- Speaker photo fallback pattern: `SpeakerPortrait.astro` checks file existence with `existsSync()` at build time. When a speaker's photo file is missing from `public/speakers/`, the component renders initials (derived from speaker name) in a circular badge above the text "Photo coming soon". The placeholder uses a gradient background and soft blue styling consistent with site design. This keeps the page rendering cleanly even when photos are not yet uploaded.
