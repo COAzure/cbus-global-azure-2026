@@ -40,3 +40,11 @@ Han owns Astro UI, layouts, and page templates.
 - Homepage hero can support partner-host messaging cleanly with a compact logo card beneath the primary CTAs, keeping sponsor/community attribution visible without disrupting the agenda and speaker preview flow.
 - Azure Columbus host branding is now integrated into the homepage hero section, displaying the Azure Columbus logo with attribution text stating "Global Azure Columbus is hosted by Azure Columbus, the local Azure user group."
 
+
+## Learnings
+
+- Removing the Featured Sessions card grid and replacing with a schedule table required cleaning up both the interface types (`FeaturedSession` → `AgendaSession` with `timeMs` added) in index.astro and the prop/template in Welcome.astro simultaneously.
+- Fixed schedule rows (Doors Open, Lunch, End of Day) are defined as hardcoded `ScheduleRow` objects in Welcome.astro with ISO timestamp strings for 2026-05-15 EDT, then merged and sorted with the content-driven sessions by `timeMs` so the final order is always chronological.
+- The `dayCount` calculation used a `Set` that could produce `0` when `agendaEntries` is empty — added `|| 1` fallback to keep the stat from showing "0 days".
+- Speaker chips inside the table link to `/speakers/{slug}/` for content-driven session rows; fixed rows have no speaker chips, so the empty `speakers: []` array on those rows is never rendered.
+- Table styling uses two row classes (`row-session`, `row-fixed`) to visually differentiate conference sessions from schedule anchors — fixed rows get muted gray text so they read as structural dividers rather than sessions.
