@@ -137,11 +137,33 @@ speakers: string[] (speaker slugs)
 
 ---
 
-## Governance
+### 5. Homepage Agenda Table Design
+**Date:** 2026-03-14  
+**Author:** Han  
+**Status:** ✅ Implemented
 
-- All meaningful changes require team consensus
-- Document architectural decisions here
-- Keep history focused on work, decisions focused on direction
+**Context:** Michael requested removing the Featured Sessions card grid from the homepage and replacing it with a schedule table showing the full conference day, including fixed rows (Doors Open, Lunch, End of Day) alongside content-driven sessions.
+
+**Decision:** Replace the session card grid with a `<table>` rendered inside a scrollable `.schedule-wrap` panel. Fixed schedule anchors (Doors Open at 9:30 AM, Lunch at 12:00 PM, End of Day at 4:00 PM) are defined directly in `Welcome.astro` as hardcoded `ScheduleRow` objects with ISO 8601 timestamps for 2026-05-15 EDT. They are merged with the content-driven sessions and sorted by `timeMs` before render so the table is always chronologically ordered.
+
+**Rationale:**
+- A table is the clearest, most accessible structure for a multi-column schedule (Time / Session / Room)
+- Merging and sorting at render time means adding future sessions to the content collection automatically places them in the right row order without touching the component
+- Fixed rows use a `row-fixed` CSS class to visually differentiate them from sessions (muted gray text) so attendees can immediately tell what's a session vs. a schedule anchor
+- Speaker names inside session rows link to their speaker pages for quick navigation
+
+**Prop Changes:**
+- `featuredSessions: FeaturedSession[]` removed from `Welcome.astro` and `index.astro`
+- Replaced with `agendaSessions: AgendaSession[]` (adds `timeMs: number` field for sort key)
+- `FeaturedSession` interface (including `description` field) removed entirely since the table doesn't need session body text
+
+**Files Changed:**
+- `src/components/Welcome.astro` — Replaced Featured Sessions section; added schedule table markup and styles; updated interfaces and frontmatter
+- `src/pages/index.astro` — Renamed interface and prop; added `timeMs` computation; updated `<Welcome>` prop
+
+---
+
+## Governance
 
 - All meaningful changes require team consensus
 - Document architectural decisions here
