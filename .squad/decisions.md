@@ -5,7 +5,7 @@
 ### 1. Astro Content Collections Architecture
 **Date:** 2026-03-14  
 **Reviewed by:** Leia  
-**Status:** Pending team consensus
+**Status:** ✅ Implemented (Phase 1 Complete)
 
 **Decision:** Use Astro's built-in Content Collections (Zod-validated) instead of custom data fetching.
 
@@ -39,10 +39,16 @@ src/
 - Speaker photos: `public/speakers/{speaker-slug}.jpg`
 
 **Implementation Plan (4 phases):**
-1. **Phase 1:** Content collections infrastructure + schemas
+1. **Phase 1:** ✅ Content collections infrastructure + schemas (Astro 6 config at `src/content.config.ts`)
 2. **Phase 2:** Homepage refresh with conference branding
 3. **Phase 3:** Dynamic speaker pages
 4. **Phase 4:** Agenda page
+
+**Astro 6 Adaptation (2026-03-14):**
+- Config file location: `src/content.config.ts` (not `src/content/config.ts`)
+- Collections use explicit `glob()` loaders for file discovery
+- Zod schemas defined in single config file
+- Speaker and agenda Markdown live in `src/content/` subdirectories as planned
 
 **Conference Content Fields:**
 

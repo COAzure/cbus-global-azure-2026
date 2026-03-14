@@ -8,59 +8,55 @@ source: "leia-project-structure-review"
 
 ## Context
 
-This project uses **Astro Content Collections** to manage Markdown-driven content (speakers, agenda events) with full TypeScript type safety via Zod schemas. This approach ensures:
-- Type-safe frontmatter validation
-- No runtime overhead parsing Markdown
-- Easy editor experience (just edit .md files)
-- Built-in relationship support (events reference speakers)
+This project uses **Astro Content Collections** to manage Markdown-driven content (speakers, agenda events) with full TypeScript type safety via Zod schemas. On Astro 6, collection definitions live in `src/content.config.ts` and each collection must declare a loader.
 
 ## Patterns
 
-### 1. Collection Schema Definition
+### 1. Astro 6 Collection Schema Definition
 
-**File:** `src/content/config.ts`
+**File:** `src/content.config.ts`
 
 ```typescript
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
 
-const speakersCollection = defineCollection({
-  type: 'content',
+const speakers = defineCollection({
+  loader: glob({ base: './src/content/speakers', pattern: '**/*.md' }),
   schema: z.object({
     name: z.string(),
     bio: z.string(),
     photo: z.string(), // filename in public/speakers/
-    linkedin: z.string().url(),
-    github: z.string().url(),
+    linkedin: z.url(),
+    github: z.url(),
   }),
 });
 
-const agendaCollection = defineCollection({
-  type: 'content',
+const agenda = defineCollection({
+  loader: glob({ base: './src/content/agenda', pattern: '**/*.md' }),
   schema: z.object({
     title: z.string(),
-    time: z.string().datetime(),
+    time: z.string().datetime({ offset: true }),
     room: z.string(),
-    speakers: z.array(z.string()), // speaker slugs
+    speakers: z.array(reference('speakers')),
   }),
 });
 
-export const collections = {
-  speakers: speakersCollection,
-  agenda: agendaCollection,
-};
+export const collections = { speakers, agenda };
 ```
 
 ### 2. Content Directory Structure
 
 ```
-src/content/
-├── config.ts              ← Collection schemas (above)
-├── speakers/
-│   ├── jane-doe.md
-│   └── john-smith.md
-└── agenda/
-    ├── keynote-morning.md
-    └── workshop-afternoon.md
+src/
+├── content.config.ts         ← Astro 6 collection config
+└── content/
+    ├── speakers/
+    │   ├── jane-doe.md
+    │   └── john-smith.md
+    └── agenda/
+        ├── keynote-morning.md
+        └── workshop-afternoon.md
 ```
 
 ### 3. Speaker Markdown Template
@@ -86,66 +82,34 @@ Optional additional bio content here (not currently used but extensible).
 ```markdown
 ---
 title: "Keynote: Cloud Native Architecture"
-time: "2026-05-15T09:00:00Z"
+time: "2026-05-15T09:00:00-04:00"
 room: "Ballroom A"
-speakers: ["jane-doe", "john-smith"]
+speakers:
+  - "jane-doe"
+  - "john-smith"
 ---
 
 Optional session description here.
 ```
 
-### 5. Dynamic Route Pattern
-
-**File:** `src/pages/speakers/[slug].astro`
-
-```typescript
-import { getCollection } from 'astro:content';
-
-export async function getStaticPaths() {
-  const speakers = await getCollection('speakers');
-  return speakers.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
-}
-
-const { entry } = Astro.props;
-const { Content } = await entry.render();
-```
-
-### 6. Listing Page Pattern
-
-**File:** `src/pages/speakers/index.astro`
-
-```typescript
-import { getCollection } from 'astro:content';
-
-const speakers = await getCollection('speakers');
-const sortedSpeakers = speakers.sort((a, b) => 
-  a.data.name.localeCompare(b.data.name)
-);
-```
-
 ## Anti-Patterns
 
-- **Don't manually parse frontmatter** — Zod validation happens automatically
-- **Don't store speaker photos in `src/assets/`** — Use `public/speakers/` so editors can drop files there easily
-- **Don't hardcode speaker data** — Always query collections with `getCollection()`
-- **Don't skip the schema validation** — Always include all required fields in frontmatter
+- **Don't use `src/content/config.ts` on Astro 6** — Astro treats it as a legacy config path and fails the build.
+- **Don't omit collection loaders** — every collection needs a loader in Astro 6.
+- **Don't store speaker photos in `src/assets/`** — use `public/speakers/` so editors can drop files there easily.
+- **Don't hardcode speaker data** — always query collections with `getCollection()`.
 
 ## File Locations (Global Azure 2026)
 
 | Item | Path |
 |------|------|
-| Collection schemas | `cbus-global-azure-2026/src/content/config.ts` |
+| Collection schemas | `cbus-global-azure-2026/src/content.config.ts` |
 | Speaker content | `cbus-global-azure-2026/src/content/speakers/*.md` |
 | Agenda content | `cbus-global-azure-2026/src/content/agenda/*.md` |
 | Speaker photos | `cbus-global-azure-2026/public/speakers/*.jpg` |
-| Dynamic speaker route | `cbus-global-azure-2026/src/pages/speakers/[slug].astro` |
-| Speaker listing | `cbus-global-azure-2026/src/pages/speakers/index.astro` |
-| Agenda page | `cbus-global-azure-2026/src/pages/agenda/index.astro` |
 
 ## References
 
 - [Astro Content Collections Docs](https://docs.astro.build/en/guides/content-collections/)
+- [Astro 6 Upgrade Guide](https://docs.astro.build/en/guides/upgrade-to/v6/)
 - [Zod Validation](https://zod.dev/)
