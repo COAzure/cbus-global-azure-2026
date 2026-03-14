@@ -109,7 +109,7 @@ const scheduleRows: ScheduleRow[] = [
               Global Azure Columbus is hosted by <a href="https://www.meetup.com/central-ohio-azure/" target="_blank" rel="noopener noreferrer">Azure Columbus</a>, your local Azure user group.
             </p>
             <p>
-              💬 Join the <a href="https://discord.gg/w2F9KS3HCs" target="_blank" rel="noopener noreferrer">Azure Columbus community on Discord</a>.
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle; margin-right: 0.3em;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Join the <a href="https://discord.gg/w2F9KS3HCs" target="_blank" rel="noopener noreferrer">Azure Columbus community on Discord</a>.
             </p>
           </div>
         </div>
@@ -192,7 +192,7 @@ const scheduleRows: ScheduleRow[] = [
                     </ul>
                   )}
                 </td>
-                <td class="col-room">{row.room}</td>
+                <td class="col-room">{row.room || '—'}</td>
               </tr>
             ))}
           </tbody>
@@ -224,7 +224,7 @@ const scheduleRows: ScheduleRow[] = [
                 <h3>
                   <a href={`${import.meta.env.BASE_URL}speakers/${speaker.slug}/`}>{speaker.name}</a>
                 </h3>
-                <p>{speaker.bio}</p>
+                <p class="speaker-bio">{speaker.bio}</p>
                 <SpeakerSocialLinks
                   linkedin={speaker.linkedin}
                   github={speaker.github}
@@ -315,10 +315,14 @@ const scheduleRows: ScheduleRow[] = [
 
   .brand,
   .nav-links a,
-  .text-link,
-  .panel-link,
   .speaker-content h3 a {
     text-decoration: none;
+  }
+
+  .text-link,
+  .panel-link {
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .brand {
@@ -394,7 +398,7 @@ const scheduleRows: ScheduleRow[] = [
     font-size: clamp(1.15rem, 2vw, 1.4rem);
     line-height: 1.4;
     font-weight: 600;
-    color: #35506b;
+    color: #16324f;
   }
 
   h2 {
@@ -451,7 +455,7 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .button.primary {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb 55%, #38bdf8);
+    background: linear-gradient(135deg, #1d4ed8, #2563eb 55%, #60a5fa);
     color: #ffffff;
     box-shadow: 0 18px 35px rgba(37, 99, 235, 0.28);
   }
@@ -494,7 +498,7 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .host-copy p:last-child {
-    color: #35506b;
+    color: #2d4156;
   }
 
   .hero-panel,
@@ -530,8 +534,9 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .stats strong {
-    font-size: 1.6rem;
+    font-size: 2rem;
     line-height: 1;
+    color: #1d4ed8;
   }
 
   .stats span {
@@ -589,7 +594,7 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .schedule-table td {
-    padding: 0.9rem 1.1rem;
+    padding: 1rem 1.25rem;
     vertical-align: top;
   }
 
@@ -678,6 +683,13 @@ const scheduleRows: ScheduleRow[] = [
     align-content: start;
   }
 
+  .speaker-bio {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .speaker-portrait-link {
     text-decoration: none;
   }
@@ -689,6 +701,21 @@ const scheduleRows: ScheduleRow[] = [
 
   .empty-state p {
     color: #35506b;
+  }
+
+  /* ── Focus ring ─────────────────────────────────────────────── */
+
+  a:focus-visible,
+  button:focus-visible,
+  .button:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  /* ── Speaker card shadow ────────────────────────────────────── */
+
+  .speaker-card {
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
   }
 
   @media (min-width: 720px) {
@@ -729,6 +756,10 @@ const scheduleRows: ScheduleRow[] = [
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
       align-items: center;
     }
+
+    .cta-panel .actions {
+      align-self: start;
+    }
   }
 
   @media (max-width: 719px) {
@@ -765,6 +796,11 @@ const scheduleRows: ScheduleRow[] = [
 
     .actions.compact .button {
       flex: 1 1 100%;
+    }
+
+    .schedule-table .col-room,
+    .schedule-table th:last-child {
+      display: none;
     }
   }
 </style>
