@@ -43,6 +43,10 @@ Han owns Astro UI, layouts, and page templates.
 
 ## Learnings
 
+- When adding a prominent event logo to the hero, placing it above the eyebrow and h1 makes the brand hierarchy clear: logo → date label → tagline. The eyebrow stays visible but reads as secondary context to the logo.
+- Shrinking the h1 visually (to ~1.3–1.4rem) while keeping the `<h1>` tag for accessibility is handled cleanly with a scoped CSS override — no wrapper element or class needed.
+- Playwright's `chromium-headless-shell` executable must be referenced by explicit path when `playwright` is installed ad-hoc via npm (not via `npx playwright install` + global). The `executablePath` option bypasses the environment lookup.
+- Dev server background processes in the bash tool need to run in the same shell session as Playwright so they share the same process group and the server is alive when the test runs.
 - Removing the Featured Sessions card grid and replacing with a schedule table required cleaning up both the interface types (`FeaturedSession` → `AgendaSession` with `timeMs` added) in index.astro and the prop/template in Welcome.astro simultaneously.
 - Fixed schedule rows (Doors Open, Lunch, End of Day) are defined as hardcoded `ScheduleRow` objects in Welcome.astro with ISO timestamp strings for 2026-05-15 EDT, then merged and sorted with the content-driven sessions by `timeMs` so the final order is always chronological.
 - The `dayCount` calculation used a `Set` that could produce `0` when `agendaEntries` is empty — added `|| 1` fallback to keep the stat from showing "0 days".
