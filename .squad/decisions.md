@@ -195,6 +195,158 @@ speakers: string[] (speaker slugs)
 **Files Updated:**
 - `src/components/Welcome.astro` — Logo placement, h1 override, event-logo styling with border-radius
 
+### 7. Speaker Content Schema Extensions: Blog Links, Null Safety, and Session IDs
+**Date:** 2026-03-14  
+**Author:** Michael S. Collier (direct implementation)  
+**Reviewed by:** Leia  
+**Status:** ✅ Accepted
+
+**Context:** Michael implemented four related improvements to speaker content, favicon branding, and agenda deep-linking to support homepage session navigation.
+
+#### 7a. Bug Fix: Speaker Body Content Null Safety
+
+**File:** `src/pages/speakers/[slug].astro` line 18
+
+**Change:**
+```typescript
+// Before
+const hasAdditionalContent = speaker.body.trim().length > 0;
+
+// After
+const hasAdditionalContent = (speaker.body ?? '').trim().length > 0;
+```
+
+**Rationale:** Prevents TypeError when speaker entries have no body content (optional field). Nullish coalescing operator provides safe fallback.
+
+**Decision:** ✅ Accepted as standard pattern for handling optional content body fields.
+
+---
+
+#### 7b. Feature: Optional Blog Link Support for Speakers
+
+**Schema Change:** `src/content.config.ts`
+```typescript
+blog: z.url().optional(),
+```
+
+**Component Changes:**
+- `SpeakerSocialLinks.astro`: Accepts optional `blog` prop, conditionally renders "Blog" link
+- `SpeakerCard.astro`: Accepts and forwards `blog` prop to SpeakerSocialLinks
+- `src/pages/speakers/[slug].astro`: Passes `speaker.data.blog` to SpeakerSocialLinks
+
+**Content Example:**
+```yaml
+# src/content/speakers/shawn-wallace.md
+blog: "https://www.shawnewallace.com/"
+```
+
+**Rationale:**
+- Speakers often maintain personal blogs as primary content channels
+- Optional field allows incremental adoption without requiring all speakers to have blogs
+- URL validation in schema ensures link quality
+- Conditional rendering using array spread is clean and efficient:
+  ```typescript
+  const links = [
+    { href: linkedin, label: 'LinkedIn' },
+    { href: github, label: 'GitHub' },
+    ...(blog ? [{ href: blog, label: 'Blog' }] : []),
+  ];
+  ```
+
+**Implementation Detail (Superseded by Decision 8):** Previously, homepage speaker cards in `Welcome.astro` intentionally did not pass the `blog` prop to maintain compact display (showing only LinkedIn/GitHub). This was reversed on 2026-03-14 per Michael S. Collier's request.
+
+**Decision:** ✅ Accepted as standard pattern for speaker contact links. Blog field is optional in schema and conditionally rendered in components.
+
+---
+
+#### 7c. Feature: Favicon Redesign with Azure Branding
+
+**Files Updated:**
+- `public/favicon.svg`: Blue cloud + white "A" logo
+- `public/favicon.ico`: Multi-resolution (16×16, 32×32, 48×48) ICO bundle
+
+**SVG Design:**
+- Cloud shape created via clipPath with 3 overlapping circles and rectangular base
+- Brand blue (#2563eb) matches site accent color
+- White "A" for "Azure" rendered as text element
+- Clean, recognizable geometric design scales well at small sizes
+
+**Rationale:**
+- Default Astro favicon doesn't communicate conference theme
+- Blue cloud immediately signals Azure ecosystem
+- Simple design scales cleanly to favicon resolutions
+- Text-based "A" ensures legibility across sizes
+
+**Decision:** ✅ Accepted. Favicon effectively represents Global Azure Columbus brand and matches site color scheme.
+
+---
+
+#### 7d. Feature: Homepage Agenda Links to Full Agenda with Hash Anchors
+
+**Component Changes:**
+- `AgendaSessionCard.astro`: Added optional `id` prop, applied to `<article>` element
+- `src/pages/agenda/index.astro`: Passes `id={session.id}` (`.md` stripped) to each AgendaSessionCard
+- `src/pages/index.astro`: Added `id` field to AgendaSession interface
+- `src/components/Welcome.astro`: Session titles in schedule table link to `/agenda/#session-id`; fixed rows (Doors Open, Lunch, End of Day) remain plain text
+
+**Link Pattern:**
+```astro
+{!row.isFixed && row.id ? (
+  <a class="row-title session-link" href={`${import.meta.env.BASE_URL}agenda/#${row.id}`}>
+    {row.title}
+  </a>
+) : (
+  <span class="row-title">{row.title}</span>
+)}
+```
+
+**ID Derivation:**
+- Session IDs derived from content collection entry filenames: `entry.id.replace(/\.md$/, '')`
+- Example: `src/content/agenda/opening-keynote.md` → `id="opening-keynote"`
+- Homepage link: `/agenda/#opening-keynote`
+
+**Rationale:**
+- Attendees viewing homepage schedule need to click session titles and jump to full descriptions on agenda page
+- Hash anchors enable deep linking without additional routing infrastructure
+- Fixed schedule rows (Doors Open, Lunch, End of Day) are not sessions and correctly remain unlinked
+- ID derivation from filename maintains consistency across pages (same strategy used for speaker slugs)
+
+**Decision:** ✅ Accepted as standard pattern for cross-page session references. Agenda sessions have stable IDs derived from filenames for reliable deep linking.
+
+---
+
+### 8. Blog Links Now Shown on Homepage Speaker Cards
+**Date:** 2026-03-14  
+**Author:** Han  
+**Requested by:** Michael S. Collier  
+**Status:** ✅ Implemented
+
+**Context:** Decision 7b previously stated that homepage speaker cards intentionally did not pass the `blog` prop to `SpeakerSocialLinks`, maintaining compact display (LinkedIn/GitHub only) with comprehensive contact info reserved for detail pages. Michael has requested this be reversed.
+
+**Decision:** Display blog links on homepage speaker cards when available.
+
+**Implementation:**
+- `FeaturedSpeaker` interface in `src/components/Welcome.astro` — added `blog?: string`
+- `FeaturedSpeaker` interface in `src/pages/index.astro` — added `blog?: string`
+- `SpeakerSocialLinks` call in `Welcome.astro` homepage speaker grid — added `blog={speaker.blog}`
+
+**Rationale:** The `.map()` in `index.astro` already spreads `speaker.data`, so the `blog` field was present in data but not forwarded. Only interface typing and prop wiring were needed. `SpeakerSocialLinks` renders blog links conditionally, so speakers without a `blog` field remain unaffected (prop is optional).
+
+**Outcome:** Blog links now appear on homepage speaker cards for any speaker whose content file includes a `blog:` field. Build clean: 8 pages.
+
+**Supersedes:** Decision 7b's design rationale regarding homepage blog link omission.
+
+---
+
+## Build Verification
+
+✅ Clean build: 8 pages generated successfully  
+✅ Blog link renders for speakers with `blog:` field (Shawn Wallace)  
+✅ No blog link for speakers without field (Chad Thomas)  
+✅ Agenda session IDs render correctly (`id="opening-keynote"`, etc.)  
+✅ Homepage schedule links to `/agenda/#session-id`  
+✅ Favicon files valid (SVG and ICO)
+
 ---
 
 ## Governance

@@ -15,6 +15,8 @@ Han owns Astro UI, layouts, and page templates.
 
 ## Learnings
 
+- Blog links are now shown on homepage speaker cards. Added `blog?: string` to `FeaturedSpeaker` interface in both `Welcome.astro` and `index.astro`, and passed `blog={speaker.blog}` to `SpeakerSocialLinks` in the homepage speaker grid. The `.map()` in `index.astro` already spread `speaker.data` so no map change was needed — only the interface and prop wiring. Note: Decision 7b previously stated homepage cards intentionally omitted blog; this was reversed by Michael S. Collier's request.
+
 - The homepage, agenda, and speaker pages are the primary user-facing flows.
 - The site should be easy to maintain as conference content changes.
 - Speaker pages live at `cbus-global-azure-2026/src/pages/speakers/index.astro` and `cbus-global-azure-2026/src/pages/speakers/[slug].astro`, both driven from `getCollection('speakers')`.
