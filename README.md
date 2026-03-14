@@ -28,6 +28,6 @@ The site will be available at `http://localhost:4321`.
 ## Community
 
 - **Meetup:** https://www.meetup.com/central-ohio-azure/
-- **Discord:** https://discord.gg/HjkFNJUG
+- **Discord:** https://discord.gg/w2F9KS3HCs
 
 Organized by the Azure Columbus user group.
