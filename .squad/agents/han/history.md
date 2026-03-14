@@ -27,3 +27,16 @@ Han owns Astro UI, layouts, and page templates.
 - Agenda times should be formatted in Eastern Time so schedule labels stay attendee-friendly during static builds.
 - Refreshing the homepage is safest when `src/pages/index.astro` owns collection queries and passes attendee-facing data into `src/components/Welcome.astro`, so the starter shell is replaced in both files.
 - Homepage refresh (Phase 2) integrated conference branding into the landing page by querying both speakers and agenda collections, replacing the Astro starter template while maintaining Layout structure consistency.
+
+## Session Update (2026-03-14)
+
+### Site Naming Update
+- **Task:** Updated all user-facing site strings from "Columbus Global Azure" to "Global Azure Columbus"
+- **Files Updated:** 6 (Layout, Welcome component, homepage, speakers pages, agenda page)
+- **Total Occurrences:** 12 instances across metadata, page titles, descriptions, and header text
+- **Approach:** Systematic find-replace across all target pages while preserving the year (2026)
+- **Outcome:** All instances successfully updated; no "Columbus Global Azure" references remain
+- **Note:** One instance in Welcome.astro body text was already using the correct "Global Azure Columbus" format
+- Homepage hero can support partner-host messaging cleanly with a compact logo card beneath the primary CTAs, keeping sponsor/community attribution visible without disrupting the agenda and speaker preview flow.
+- Azure Columbus host branding is now integrated into the homepage hero section, displaying the Azure Columbus logo with attribution text stating "Global Azure Columbus is hosted by Azure Columbus, the local Azure user group."
+

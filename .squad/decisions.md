@@ -114,9 +114,34 @@ speakers: string[] (speaker slugs)
 - `src/pages/speakers/[slug].astro` — Speaker detail template
 - `src/pages/agenda/index.astro` — Agenda page
 
+### 4. Homepage Host Logo Placement
+**Date:** 2026-03-14  
+**Reviewed by:** Han  
+**Status:** ✅ Implemented (Homepage Host Branding Complete)
+
+**Decision:** Place the Azure Columbus logo and host attribution inside the homepage hero, directly beneath the primary call-to-action buttons.
+
+**Rationale:**
+- Keeps the host relationship visible immediately on first load
+- Uses the provided public logo asset without adding a new page section
+- Preserves the existing homepage structure and keeps the session/speaker preview content higher on the page
+
+**Implementation:**
+- Added host card component to `src/components/Welcome.astro` beneath hero CTAs
+- Logo: `public/azure-cbus-smaller.png`
+- Copy: "Global Azure Columbus is hosted by Azure Columbus, the local Azure user group."
+- Maintains layout consistency and spacing with rest of homepage
+
+**Files Updated:**
+- `src/components/Welcome.astro` — Added host card
+
 ---
 
 ## Governance
+
+- All meaningful changes require team consensus
+- Document architectural decisions here
+- Keep history focused on work, decisions focused on direction
 
 - All meaningful changes require team consensus
 - Document architectural decisions here
