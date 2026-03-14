@@ -1,6 +1,6 @@
 ---
 title: "Happy Birthday! — Scaling Agent Workflows from One to Thirty with Beads"
-time: "2026-04-18T15:00:00-04:00"
+time: "2026-04-18T11:50:00-04:00"
 room: "Main Stage"
 speakers:
   - "bill-klos"

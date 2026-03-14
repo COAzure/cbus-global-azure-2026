@@ -55,9 +55,16 @@ interface ScheduleRow {
 }
 
 const FIXED_ROWS: ScheduleRow[] = [
-  { timeMs: new Date('2026-04-18T09:30:00-04:00').getTime(), timeLabel: '9:30 AM', title: 'Doors Open', room: 'Lobby', speakers: [], isFixed: true },
-  { timeMs: new Date('2026-04-18T12:00:00-04:00').getTime(), timeLabel: '12:00 PM', title: 'Lunch', room: 'Dining Area', speakers: [], isFixed: true },
-  { timeMs: new Date('2026-04-18T16:00:00-04:00').getTime(), timeLabel: '4:00 PM', title: 'End of Day', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T09:30:00-04:00').getTime(), timeLabel: '9:30 AM', title: 'Doors Open / Registration / Networking', room: 'Lobby', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T10:00:00-04:00').getTime(), timeLabel: '10:00 AM', title: 'Opening Remarks', room: 'Main Stage', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T10:50:00-04:00').getTime(), timeLabel: '10:50 AM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T11:40:00-04:00').getTime(), timeLabel: '11:40 AM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T12:30:00-04:00').getTime(), timeLabel: '12:30 PM', title: 'Lunch', room: 'Dining Area', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T13:40:00-04:00').getTime(), timeLabel: '1:40 PM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T14:30:00-04:00').getTime(), timeLabel: '2:30 PM', title: 'Break', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T15:20:00-04:00').getTime(), timeLabel: '3:20 PM', title: 'Panel Discussion / Buffer', room: 'Main Stage', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T15:50:00-04:00').getTime(), timeLabel: '3:50 PM', title: 'Closing Remarks', room: 'Main Stage', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T16:00:00-04:00').getTime(), timeLabel: '4:00 PM', title: 'Go Home', room: '', speakers: [], isFixed: true },
 ];
 
 const scheduleRows: ScheduleRow[] = [
