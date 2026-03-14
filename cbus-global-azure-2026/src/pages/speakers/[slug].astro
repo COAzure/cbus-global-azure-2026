@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 
 const { speaker } = Astro.props;
 const { Content } = await render(speaker);
-const hasAdditionalContent = speaker.body.trim().length > 0;
+const hasAdditionalContent = (speaker.body ?? '').trim().length > 0;
 ---
 
 <Layout
@@ -40,6 +40,7 @@ description={speaker.data.bio}
 <SpeakerSocialLinks
 linkedin={speaker.data.linkedin}
 github={speaker.data.github}
+blog={speaker.data.blog}
 />
 {hasAdditionalContent && (
 <section class="details">
