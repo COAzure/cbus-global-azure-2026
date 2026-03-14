@@ -25,3 +25,5 @@ Han owns Astro UI, layouts, and page templates.
 - The agenda page lives at `cbus-global-azure-2026/src/pages/agenda/index.astro` and uses `getCollection('agenda')` plus `getEntries(entry.data.speakers)` to resolve speaker references into linked speaker chips.
 - Agenda presentation is split into day buckets and session cards, with reusable session styling in `cbus-global-azure-2026/src/components/AgendaSessionCard.astro`.
 - Agenda times should be formatted in Eastern Time so schedule labels stay attendee-friendly during static builds.
+- Refreshing the homepage is safest when `src/pages/index.astro` owns collection queries and passes attendee-facing data into `src/components/Welcome.astro`, so the starter shell is replaced in both files.
+- Homepage refresh (Phase 2) integrated conference branding into the landing page by querying both speakers and agenda collections, replacing the Astro starter template while maintaining Layout structure consistency.

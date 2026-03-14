@@ -147,6 +147,28 @@ const sessions = await Promise.all(
 ---
 ```
 
+### 7. Collection-Driven Homepage Highlights
+
+**Files:** `src/pages/index.astro`, `src/components/Welcome.astro`
+
+- Use the homepage to query `getCollection('agenda')` and `getCollection('speakers')` so landing-page highlights stay synchronized with the real schedule and lineup.
+- Resolve agenda speaker references with `getEntries()` before rendering homepage session spotlights, then pass a small, UI-friendly prop shape into the homepage component.
+- Keep homepage calls to action pointed at the agenda and speakers pages so attendees can move directly into deeper planning flows.
+
+```astro
+---
+const sessions = await Promise.all(
+  (await getCollection('agenda')).map(async (entry) => ({
+    title: entry.data.title,
+    speakers: (await getEntries(entry.data.speakers)).map((speaker) => ({
+      name: speaker.data.name,
+      slug: speaker.id.replace(/\.md$/, ''),
+    })),
+  })),
+);
+---
+```
+
 ## Anti-Patterns
 
 - **Don't use `src/content/config.ts` on Astro 6** — Astro treats it as a legacy config path and fails the build.
