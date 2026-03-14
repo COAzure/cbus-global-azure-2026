@@ -1,0 +1,95 @@
+---
+import SpeakerPortrait from './SpeakerPortrait.astro';
+import SpeakerSocialLinks from './SpeakerSocialLinks.astro';
+
+interface Props {
+slug: string;
+name: string;
+bio: string;
+photo: string;
+linkedin: string;
+github: string;
+}
+
+const { slug, name, bio, photo, linkedin, github } = Astro.props;
+---
+
+<article class="card">
+<a class="portrait-link" href={`/speakers/${slug}/`}>
+<SpeakerPortrait name={name} photo={photo} variant="card" />
+</a>
+<div class="content">
+<p class="eyebrow">Featured speaker</p>
+<h2>
+<a href={`/speakers/${slug}/`}>{name}</a>
+</h2>
+<p class="bio">{bio}</p>
+<div class="footer">
+<SpeakerSocialLinks linkedin={linkedin} github={github} compact />
+<a class="details-link" href={`/speakers/${slug}/`}>View profile</a>
+</div>
+</div>
+</article>
+
+<style>
+.card {
+display: grid;
+gap: 1.5rem;
+padding: 1.5rem;
+border-radius: 28px;
+background: rgba(255, 255, 255, 0.92);
+box-shadow: 0 28px 55px rgba(15, 23, 42, 0.08);
+}
+
+.portrait-link {
+text-decoration: none;
+}
+
+.content {
+display: grid;
+gap: 1rem;
+}
+
+.eyebrow {
+margin: 0;
+color: #2563eb;
+font-size: 0.82rem;
+font-weight: 800;
+letter-spacing: 0.12em;
+text-transform: uppercase;
+}
+
+h2 {
+margin: 0;
+font-size: clamp(1.45rem, 2vw, 1.75rem);
+line-height: 1.1;
+}
+
+h2 a {
+text-decoration: none;
+}
+
+.bio {
+margin: 0;
+color: #35506b;
+}
+
+.footer {
+display: grid;
+gap: 1rem;
+}
+
+.details-link {
+justify-self: start;
+font-weight: 700;
+text-decoration: none;
+color: #1d4ed8;
+}
+
+.details-link:hover,
+.details-link:focus-visible,
+h2 a:hover,
+h2 a:focus-visible {
+text-decoration: underline;
+}
+</style>

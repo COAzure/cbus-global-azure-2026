@@ -1,0 +1,88 @@
+---
+import { getCollection, getEntries } from 'astro:content';
+import Welcome from '../components/Welcome.astro';
+import Layout from '../layouts/Layout.astro';
+
+interface SessionSpeaker {
+  name: string;
+  slug: string;
+}
+
+interface AgendaSession {
+  title: string;
+  timeLabel: string;
+  timeMs: number;
+  room: string;
+  speakers: SessionSpeaker[];
+}
+
+interface FeaturedSpeaker {
+  slug: string;
+  name: string;
+  bio: string;
+  photo: string;
+  linkedin: string;
+  github: string;
+}
+
+const agendaEntries = (await getCollection('agenda')).sort(
+  (left, right) => new Date(left.data.time).getTime() - new Date(right.data.time).getTime(),
+);
+
+const speakerEntries: FeaturedSpeaker[] = (await getCollection('speakers'))
+  .map((speaker) => ({
+    slug: speaker.id.replace(/\.md$/, ''),
+    ...speaker.data,
+  }))
+  .sort((left, right) => left.name.localeCompare(right.name));
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'America/New_York',
+});
+
+const timeFormatter = new Intl.DateTimeFormat('en-US', {
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZone: 'America/New_York',
+});
+
+const agendaSessions: AgendaSession[] = await Promise.all(
+  agendaEntries.map(async (entry) => {
+    const speakers = await getEntries(entry.data.speakers);
+    const dt = new Date(entry.data.time);
+
+    return {
+      title: entry.data.title,
+      timeLabel: timeFormatter.format(dt),
+      timeMs: dt.getTime(),
+      room: entry.data.room,
+      speakers: speakers.map((speaker) => ({
+        name: speaker.data.name,
+        slug: speaker.id.replace(/\.md$/, ''),
+      })),
+    };
+  }),
+);
+
+const conferenceDate = agendaEntries[0]
+  ? dateFormatter.format(new Date(agendaEntries[0].data.time))
+  : 'May 2026';
+const dayCount = new Set(agendaEntries.map((entry) => entry.data.time.slice(0, 10))).size || 1;
+---
+
+<Layout
+  title="Global Azure Columbus 2026"
+  description="Discover the Global Azure Columbus 2026 schedule, speakers, and practical sessions for the community event."
+>
+  <Welcome
+    conferenceDate={conferenceDate}
+    dayCount={dayCount}
+    sessionCount={agendaSessions.length}
+    speakerCount={speakerEntries.length}
+    agendaSessions={agendaSessions}
+    featuredSpeakers={speakerEntries}
+  />
+</Layout>

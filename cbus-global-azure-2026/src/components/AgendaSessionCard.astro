@@ -1,0 +1,153 @@
+---
+interface SpeakerLink {
+  name: string;
+  slug: string;
+}
+
+interface Props {
+  title: string;
+  timeLabel: string;
+  room: string;
+  speakers?: SpeakerLink[];
+  description?: string;
+}
+
+const { title, timeLabel, room, speakers = [], description } = Astro.props;
+const hasSpeakers = speakers.length > 0;
+---
+
+<article class="session-card">
+  <div class="meta" aria-label={`Session starts at ${timeLabel}`}>
+    <p class="meta-label">Start time</p>
+    <p class="time">{timeLabel}</p>
+    <p class="room">{room}</p>
+  </div>
+
+  <div class="content">
+    <h3>{title}</h3>
+
+    {description && <p class="description">{description}</p>}
+
+    {hasSpeakers && (
+      <div class="speakers">
+        <p class="speaker-label">{speakers.length === 1 ? 'Speaker' : 'Speakers'}</p>
+        <ul class="speaker-list" aria-label={`${title} speakers`}>
+          {speakers.map((speaker) => (
+            <li>
+              <a href={`/speakers/${speaker.slug}/`}>{speaker.name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</article>
+
+<style>
+  .session-card {
+    display: grid;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 28px 55px rgba(15, 23, 42, 0.08);
+  }
+
+  .meta {
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    padding: 1.25rem;
+    border-radius: 22px;
+    background: linear-gradient(160deg, #dbeafe, #eff6ff 60%, #ffffff);
+    color: #16324f;
+  }
+
+  .meta-label,
+  .speaker-label {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #2563eb;
+  }
+
+  .time,
+  .room,
+  h3,
+  .description {
+    margin: 0;
+  }
+
+  .time {
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .room {
+    color: #35506b;
+    font-weight: 600;
+  }
+
+  .content {
+    display: grid;
+    gap: 1rem;
+  }
+
+  h3 {
+    font-size: clamp(1.45rem, 2.5vw, 1.9rem);
+    line-height: 1.1;
+  }
+
+  .description {
+    color: #35506b;
+  }
+
+  .speakers {
+    display: grid;
+    gap: 0.75rem;
+    padding-top: 0.25rem;
+    border-top: 1px solid #d7e5f4;
+  }
+
+  .speaker-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .speaker-list a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 0.95rem;
+    border-radius: 999px;
+    background: #e2ecf8;
+    color: #0f2942;
+    font-weight: 700;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      background 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .speaker-list a:hover,
+  .speaker-list a:focus-visible {
+    background: #c9def5;
+    box-shadow: 0 14px 30px rgba(59, 130, 246, 0.18);
+    transform: translateY(-1px);
+  }
+
+  @media (min-width: 720px) {
+    .session-card {
+      grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+      align-items: start;
+    }
+  }
+</style>

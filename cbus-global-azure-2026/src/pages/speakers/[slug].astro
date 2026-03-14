@@ -1,0 +1,143 @@
+---
+import { getCollection, render } from 'astro:content';
+import SpeakerPortrait from '../../components/SpeakerPortrait.astro';
+import SpeakerSocialLinks from '../../components/SpeakerSocialLinks.astro';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+	const speakers = await getCollection('speakers');
+
+	return speakers.map((speaker) => ({
+		params: { slug: speaker.id.replace(/\.md$/, '') },
+		props: { speaker },
+	}));
+}
+
+const { speaker } = Astro.props;
+const { Content } = await render(speaker);
+const hasAdditionalContent = speaker.body.trim().length > 0;
+---
+
+<Layout
+title={`${speaker.data.name} | Speakers | Global Azure Columbus 2026`}
+description={speaker.data.bio}
+>
+<main class="page">
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+<a href="/">Home</a>
+<span aria-hidden="true">/</span>
+<a href="/speakers/">Speakers</a>
+<span aria-hidden="true">/</span>
+<strong>{speaker.data.name}</strong>
+</nav>
+
+<section class="profile">
+<SpeakerPortrait name={speaker.data.name} photo={speaker.data.photo} variant="detail" />
+<div class="content">
+<p class="eyebrow">Speaker profile</p>
+<h1>{speaker.data.name}</h1>
+<p class="bio">{speaker.data.bio}</p>
+<SpeakerSocialLinks
+linkedin={speaker.data.linkedin}
+github={speaker.data.github}
+/>
+{hasAdditionalContent && (
+<section class="details">
+<h2>More about {speaker.data.name}</h2>
+<div class="markdown">
+<Content />
+</div>
+</section>
+)}
+</div>
+</section>
+</main>
+</Layout>
+
+<style>
+.page {
+max-width: 1120px;
+margin: 0 auto;
+padding: 2.5rem 1.5rem 4rem;
+}
+
+.breadcrumbs {
+display: flex;
+flex-wrap: wrap;
+align-items: center;
+gap: 0.5rem;
+margin-bottom: 2rem;
+font-size: 0.95rem;
+color: #4f6b88;
+}
+
+.breadcrumbs a {
+text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible {
+text-decoration: underline;
+}
+
+.profile {
+display: grid;
+gap: 2rem;
+align-items: start;
+}
+
+.content {
+display: grid;
+gap: 1.25rem;
+padding: 2rem;
+border-radius: 28px;
+background: rgba(255, 255, 255, 0.92);
+box-shadow: 0 28px 55px rgba(15, 23, 42, 0.08);
+}
+
+.eyebrow {
+margin: 0;
+font-size: 0.85rem;
+font-weight: 800;
+letter-spacing: 0.16em;
+text-transform: uppercase;
+color: #2563eb;
+}
+
+h1,
+h2 {
+margin: 0;
+}
+
+h1 {
+font-size: clamp(2.5rem, 6vw, 4rem);
+line-height: 0.98;
+}
+
+.bio {
+margin: 0;
+font-size: 1.1rem;
+color: #35506b;
+}
+
+.details {
+display: grid;
+gap: 0.85rem;
+padding-top: 0.5rem;
+border-top: 1px solid #d7e5f4;
+}
+
+.markdown {
+color: #35506b;
+}
+
+.markdown :global(p) {
+margin: 0;
+}
+
+@media (min-width: 768px) {
+.profile {
+grid-template-columns: minmax(260px, 360px) minmax(0, 1fr);
+}
+}
+</style>

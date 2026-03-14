@@ -1,0 +1,237 @@
+---
+import { getCollection, getEntries } from 'astro:content';
+import AgendaSessionCard from '../../components/AgendaSessionCard.astro';
+import Layout from '../../layouts/Layout.astro';
+
+interface SessionSpeaker {
+  name: string;
+  slug: string;
+}
+
+interface SessionItem {
+  id: string;
+  dayKey: string;
+  dayLabel: string;
+  title: string;
+  timeLabel: string;
+  room: string;
+  speakers: SessionSpeaker[];
+  description: string;
+}
+
+const agendaEntries = (await getCollection('agenda')).sort(
+  (left, right) => new Date(left.data.time).getTime() - new Date(right.data.time).getTime(),
+);
+
+const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'America/New_York',
+});
+
+const timeFormatter = new Intl.DateTimeFormat('en-US', {
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZone: 'America/New_York',
+});
+
+const sessions: SessionItem[] = await Promise.all(
+  agendaEntries.map(async (entry) => {
+    const startTime = new Date(entry.data.time);
+    const speakers = await getEntries(entry.data.speakers);
+
+    return {
+      id: entry.id,
+      dayKey: entry.data.time.slice(0, 10),
+      dayLabel: dateFormatter.format(startTime),
+      title: entry.data.title,
+      timeLabel: timeFormatter.format(startTime),
+      room: entry.data.room,
+      speakers: speakers.map((speaker) => ({
+        name: speaker.data.name,
+        slug: speaker.id.replace(/\.md$/, ''),
+      })),
+      description: entry.body.trim(),
+    };
+  }),
+);
+
+const sessionsByDay = Array.from(
+  sessions.reduce((days, session) => {
+    const bucket = days.get(session.dayKey) ?? {
+      key: session.dayKey,
+      label: session.dayLabel,
+      sessions: [] as SessionItem[],
+    };
+
+    bucket.sessions.push(session);
+    days.set(session.dayKey, bucket);
+    return days;
+  }, new Map<string, { key: string; label: string; sessions: SessionItem[] }>()),
+).map(([, day]) => day);
+---
+
+<Layout
+  title="Agenda | Global Azure Columbus 2026"
+  description="Plan your day at Global Azure Columbus 2026 with the full conference agenda."
+>
+  <main class="page">
+    <header class="hero">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span aria-hidden="true">/</span>
+        <strong>Agenda</strong>
+      </nav>
+      <p class="eyebrow">Global Azure Columbus 2026</p>
+      <h1>An attendee-friendly schedule for the day</h1>
+      <p class="lede">
+        See each session at a glance, find the room quickly, and jump into speaker
+        profiles before you head to the next talk.
+      </p>
+      <p class="timezone">All times shown in Eastern Time.</p>
+    </header>
+
+    {sessionsByDay.length > 0 ? (
+      <div class="agenda-days">
+        {sessionsByDay.map((day) => (
+          <section class="day-section" aria-labelledby={`agenda-day-${day.key}`}>
+            <div class="day-header">
+              <p class="day-label">Conference day</p>
+              <h2 id={`agenda-day-${day.key}`}>{day.label}</h2>
+              <p class="day-count">
+                {day.sessions.length} {day.sessions.length === 1 ? 'session' : 'sessions'}
+              </p>
+            </div>
+
+            <div class="session-list">
+              {day.sessions.map((session) => (
+                <AgendaSessionCard
+                  title={session.title}
+                  timeLabel={session.timeLabel}
+                  room={session.room}
+                  speakers={session.speakers}
+                  description={session.description}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    ) : (
+      <section class="empty-state">
+        <h2>The schedule is almost ready.</h2>
+        <p>Please check back soon for the latest conference sessions.</p>
+      </section>
+    )}
+  </main>
+</Layout>
+
+<style>
+  .page {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 4rem;
+  }
+
+  .hero {
+    display: grid;
+    gap: 1rem;
+    padding: 2rem 0 2.5rem;
+  }
+
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #4f6b88;
+  }
+
+  .breadcrumbs a {
+    text-decoration: none;
+  }
+
+  .breadcrumbs a:hover,
+  .breadcrumbs a:focus-visible {
+    text-decoration: underline;
+  }
+
+  .eyebrow,
+  .day-label {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #2563eb;
+  }
+
+  h1,
+  h2,
+  .lede,
+  .timezone,
+  .day-count,
+  .empty-state h2,
+  .empty-state p {
+    margin: 0;
+  }
+
+  h1 {
+    max-width: 12ch;
+    font-size: clamp(2.8rem, 7vw, 4.5rem);
+    line-height: 0.95;
+  }
+
+  .lede,
+  .timezone,
+  .day-count,
+  .empty-state p {
+    color: #35506b;
+  }
+
+  .lede {
+    max-width: 64ch;
+    font-size: 1.1rem;
+  }
+
+  .timezone {
+    font-weight: 600;
+  }
+
+  .agenda-days {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .day-section {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .day-header {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    line-height: 1;
+  }
+
+  .session-list {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .empty-state {
+    padding: 2rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 28px 55px rgba(15, 23, 42, 0.08);
+  }
+
+  .empty-state p {
+    margin-top: 0.75rem;
+  }
+</style>
