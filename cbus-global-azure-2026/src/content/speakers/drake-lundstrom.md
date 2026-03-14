@@ -6,7 +6,7 @@ linkedin: "https://www.linkedin.com/in/drake-lundstrom"
 github: "https://github.com/drakelundstrom"
 ---
 
-Drake is a Microsoft MVP, senior full stack developer and lifelong learner.  He fell in love with programming because there is always more to learn. He has worked on a variety of clouds and tech stacks, with a bias towards Microsoft, and dealt with application development, infrastrucuture, design and essentially every part of a DevOps team.
+Drake is a Microsoft MVP, senior full stack developer and lifelong learner. He fell in love with programming because there is always more to learn. He has worked on a variety of clouds and tech stacks, with a bias towards Microsoft, and dealt with application development, infrastructure, design and essentially every part of a DevOps team.
 
 Drake is active in the Columbus Tech scene, both as an organizer and a presenter, and is always happy to help mentor junior developers (though he has a long recommended reading list).
 
