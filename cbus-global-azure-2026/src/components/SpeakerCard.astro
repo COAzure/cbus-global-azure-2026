@@ -15,18 +15,18 @@ const { slug, name, bio, photo, linkedin, github } = Astro.props;
 ---
 
 <article class="card">
-<a class="portrait-link" href={`/speakers/${slug}/`}>
+<a class="portrait-link" href={`${import.meta.env.BASE_URL}speakers/${slug}/`}>
 <SpeakerPortrait name={name} photo={photo} variant="card" />
 </a>
 <div class="content">
 <p class="eyebrow">Featured speaker</p>
 <h2>
-<a href={`/speakers/${slug}/`}>{name}</a>
+<a href={`${import.meta.env.BASE_URL}speakers/${slug}/`}>{name}</a>
 </h2>
 <p class="bio">{bio}</p>
 <div class="footer">
 <SpeakerSocialLinks linkedin={linkedin} github={github} compact />
-<a class="details-link" href={`/speakers/${slug}/`}>View profile</a>
+<a class="details-link" href={`${import.meta.env.BASE_URL}speakers/${slug}/`}>View profile</a>
 </div>
 </div>
 </article>
