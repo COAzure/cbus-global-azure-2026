@@ -433,6 +433,119 @@ blog: "https://www.shawnewallace.com/"
 
 ---
 
+### 12. Design Improvements — Homepage Accessibility & Polish
+**Date:** 2026-03-14  
+**Reviewed by:** Padmé (Designer), Han (Frontend Dev)  
+**Approved by:** Michael S. Collier  
+**Status:** ✅ Implemented
+
+**Context:** Padmé conducted comprehensive design audit of homepage and identified 13 actionable improvements across accessibility, visual hierarchy, spacing, and consistency. Michael approved full batch; Han implemented all changes.
+
+**Improvements Implemented:**
+
+#### 🔴 High Priority (Accessibility)
+
+1. **Focus ring visibility** — Added `a:focus-visible, button:focus-visible, .button:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px }` in Welcome.astro scoped styles.
+
+2. **Host card body text contrast** — `.host-copy p:last-child` color darkened from `#35506b` → `#2d4156` for WCAG AA compliance.
+
+3. **Schedule table mobile readability** — Room `<th>` and `.col-room` `<td>` hidden via media query `@media (max-width: 520px)` for improved mobile layout.
+
+#### 🟡 Medium Priority (Polish)
+
+4. **Primary CTA gradient end stop** — `.button.primary` gradient changed from `#38bdf8` → `#60a5fa`, maintaining white text contrast.
+
+5. **Hero h1 color** — `h1 { color }` darkened from `#35506b` → `#16324f` for stronger visual hierarchy.
+
+6. **Schedule table row spacing** — `td` padding increased from `0.9rem 1.1rem` → `1rem 1.25rem`.
+
+7. **Speaker bio 3-line clamp** — Applied `class="speaker-bio"` with `-webkit-line-clamp: 3` and `overflow: hidden`.
+
+8. **Stats visual weight** — `.stats strong` font-size increased `1.6rem` → `2rem`; added `color: #1d4ed8`.
+
+#### 🟢 Low Priority (Consistency)
+
+9. **Consistent link underlines** — `.text-link` and `.panel-link` receive `text-decoration: underline; text-underline-offset: 4px`.
+
+10. **Speaker portrait shadow** — Updated from `0 24px 50px rgba(15,23,42,0.12)` → `0 24px 48px rgba(0,0,0,0.12)`.
+
+11. **Break rows empty Room cell** — `{row.room}` changed to `{row.room || '—'}` for em-dash fallback.
+
+12. **CTA panel button alignment** — Added `.cta-panel .actions { align-self: start }` in `@media (min-width: 720px)`.
+
+13. **Discord emoji → inline SVG** — Replaced 💬 with inline SVG for reliable cross-platform rendering (`aria-hidden="true"`, `vertical-align: middle`).
+
+**Files Changed:**
+- `src/components/Welcome.astro` — 12 changes
+- `src/components/SpeakerPortrait.astro` — 1 change (shadow)
+
+**Build Verification:** ✅ `npm run build` passed (9 pages, 0 errors)
+
+**Decision:** ✅ All 13 improvements approved and implemented. Design audit complete.
+
+---
+
+### 13. Global CSS Token System Implementation
+**Date:** 2026-03-14  
+**Author:** Padmé (Designer), Han (Frontend Dev)  
+**Status:** ✅ Implemented
+
+**Context:** After consolidating design improvements, Padmé designed a comprehensive CSS custom properties system to eliminate design duplication across pages and components. Han implemented token migration across all 8 target files.
+
+**Decision:** Introduce a global CSS token system with 60+ custom properties defining colors, typography, spacing, shadows, radii, transitions, and focus states. All component and page files migrate to use `var(--token)` references, removing 8 duplicate utility class definitions now defined globally in `src/styles/global.css`.
+
+**Token Coverage:**
+- **24 color tokens** (primary, text, background, border variants)
+- **12 typography tokens** (sizes, weights, line-heights, letter-spacing)
+- **14 spacing tokens** (space-1 through space-14)
+- **6 radius tokens** (pill through 2xl)
+- **4 shadow tokens** (sm through xl)
+- **4 focus/accessibility tokens**
+- **2 transition tokens**
+
+**Global Utility Classes (Removed from Components):**
+- `.button`, `.button.primary`, `.button.secondary`
+- `.eyebrow`, `.panel-label`
+- `.breadcrumbs`
+- `.lede`
+- `.empty-state`
+- `.text-link`, `.panel-link`, `.inline-link`
+- `.chip`, `.gradient-light`
+
+**Files Changed:**
+1. `src/styles/global.css` — New; defines all 60+ tokens and 10 utility classes
+2. `src/layouts/Layout.astro` — Imports global.css
+3. `src/components/Welcome.astro` — Token migration; removed `.button`, `.eyebrow`, `.panel-label`, focus styles
+4. `src/pages/agenda/index.astro` — Token migration; removed `.breadcrumbs`, `.eyebrow`, `.lede`, `.empty-state`
+5. `src/pages/speakers/index.astro` — Token migration; removed `.breadcrumbs`, `.eyebrow`, `.lede`, `.empty-state`
+6. `src/pages/speakers/[slug].astro` — Token migration; removed `.breadcrumbs`, `.eyebrow`
+7. `src/components/AgendaSessionCard.astro` — Token migration
+8. `src/components/SpeakerCard.astro` — Token migration; removed `.eyebrow`
+9. `src/components/SpeakerPortrait.astro` — Token migration (shadow, radius); retained unique gradient
+10. `src/components/SpeakerSocialLinks.astro` — Token migration; considered `.chip` pattern
+
+**Implementation Approach:**
+- Search & replace hardcoded colors with token variables
+- Removed duplicate utility classes now defined globally
+- Retained layout-specific classes updated with token values
+- Preserved unique component styles (e.g., SpeakerPortrait gradient)
+- Kept `.day-label` styles local (markup-dependent, out of scope)
+
+**Build Validation:**
+- `npm run build` passed (9 pages, 0 errors)
+- No breaking changes; all styles preserved
+
+**Benefits:**
+- **Consistency:** Single source of truth for all design values
+- **Maintainability:** Change a value once, update everywhere
+- **Scalability:** Foundation for future theming (dark mode, etc.)
+- **Accessibility:** Focus styles globally consistent
+- **DX:** IDE autocomplete for token variables
+
+**Decision:** ✅ Token system approved and implemented. Global design consistency established.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

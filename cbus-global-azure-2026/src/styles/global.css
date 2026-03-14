@@ -1,0 +1,402 @@
+/**
+ * Global Azure Columbus 2026 — Design Token System
+ * 
+ * This file defines the CSS custom properties (design tokens) and base styles
+ * for the conference site. Import this in Layout.astro.
+ * 
+ * Token Categories:
+ * - Colors (primary, neutral, semantic)
+ * - Typography (font families, sizes, weights, line heights)
+ * - Spacing (consistent padding/margin scale)
+ * - Shadows (elevation system)
+ * - Borders (radius, colors)
+ * - Focus states (accessibility)
+ * - Transitions (motion)
+ */
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ─── Color Scheme ─────────────────────────────────────────────────────── */
+  color-scheme: light;
+
+  /* ─── Primary Colors (Azure Blue Palette) ──────────────────────────────── */
+  --color-primary: #1d4ed8;           /* Primary blue — stats, accents, links */
+  --color-primary-hover: #1e40af;     /* Darker blue on hover */
+  --color-primary-light: #2563eb;     /* Eyebrow text, labels */
+  --color-primary-gradient-start: #1d4ed8;
+  --color-primary-gradient-mid: #2563eb;
+  --color-primary-gradient-end: #60a5fa;
+
+  /* ─── Neutral Colors ───────────────────────────────────────────────────── */
+  --color-text-heading: #16324f;      /* h1, strong text, dark headings */
+  --color-text-body: #2d4156;         /* Host card body, improved contrast */
+  --color-text-muted: #35506b;        /* Lede, descriptions, secondary text */
+  --color-text-subtle: #4f6b88;       /* Breadcrumbs, meta text */
+  --color-text-faded: #64748b;        /* Fixed row text (schedule) */
+  --color-text-disabled: #94a3b8;     /* Very light text (e.g., empty room) */
+  --color-text-dark: #0f2942;         /* Speaker chips, session titles */
+
+  /* ─── Background Colors ────────────────────────────────────────────────── */
+  --color-bg-page: #f3f7fb;           /* Page background */
+  --color-bg-card: rgba(255, 255, 255, 0.94);  /* Card backgrounds */
+  --color-bg-card-solid: #ffffff;     /* Host card, solid white */
+  --color-bg-card-alt: rgba(255, 255, 255, 0.92);  /* Empty states */
+  --color-bg-chip: #e2ecf8;           /* Speaker chips, social links */
+  --color-bg-chip-hover: #c9def5;     /* Chip hover state */
+  --color-bg-fixed-row: #f8fafc;      /* Fixed schedule rows */
+  --color-bg-gradient-start: #dbeafe; /* Stats card gradient */
+  --color-bg-gradient-mid: #eff6ff;
+  --color-bg-gradient-end: #ffffff;
+
+  /* ─── Border Colors ────────────────────────────────────────────────────── */
+  --color-border-light: #e8f0f8;      /* Table row borders */
+  --color-border-section: #d7e5f4;    /* Section dividers */
+  --color-border-header: #dbeafe;     /* Table header border */
+  --color-border-button: #c7d8ec;     /* Secondary button border */
+
+  /* ─── Typography — Font Family ─────────────────────────────────────────── */
+  --font-family-sans: Inter, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  /* ─── Typography — Font Sizes ──────────────────────────────────────────── */
+  --font-size-xs: 0.78rem;            /* Table headers, meta labels */
+  --font-size-sm: 0.82rem;            /* Eyebrow text */
+  --font-size-base: 0.95rem;          /* Body text, breadcrumbs */
+  --font-size-md: 1rem;               /* Default */
+  --font-size-lg: 1.1rem;             /* Lede paragraphs */
+  --font-size-xl: 1.2rem;             /* Host title */
+  --font-size-2xl: 1.5rem;            /* h3 base */
+  --font-size-3xl: 1.7rem;            /* Session time */
+  --font-size-4xl: 2rem;              /* Stats numbers */
+
+  /* Fluid heading sizes (use clamp for responsive) */
+  --font-size-h1-min: 1.15rem;
+  --font-size-h1-max: 1.4rem;
+  --font-size-h2-min: 1.9rem;
+  --font-size-h2-max: 3rem;
+  --font-size-h3-min: 1.4rem;
+  --font-size-h3-max: 1.9rem;
+
+  /* ─── Typography — Font Weights ────────────────────────────────────────── */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* ─── Typography — Line Heights ────────────────────────────────────────── */
+  --line-height-tight: 0.95;          /* Large headings */
+  --line-height-snug: 1;              /* Stats, h2 */
+  --line-height-compact: 1.1;         /* h3 */
+  --line-height-normal: 1.4;          /* h1 */
+  --line-height-relaxed: 1.5;         /* Body text */
+
+  /* ─── Typography — Letter Spacing ──────────────────────────────────────── */
+  --letter-spacing-tight: 0.08em;     /* Brand, initials */
+  --letter-spacing-wide: 0.12em;      /* Some eyebrows */
+  --letter-spacing-wider: 0.14em;     /* Table headers */
+  --letter-spacing-widest: 0.16em;    /* Eyebrow text */
+
+  /* ─── Spacing Scale ────────────────────────────────────────────────────── */
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.35rem;   /* ~5.6px — host-copy gap */
+  --space-3: 0.5rem;    /* 8px */
+  --space-4: 0.75rem;   /* 12px */
+  --space-5: 0.85rem;   /* ~13.6px — stats padding */
+  --space-6: 1rem;      /* 16px */
+  --space-7: 1.1rem;    /* ~17.6px — host card gap */
+  --space-8: 1.25rem;   /* 20px */
+  --space-9: 1.5rem;    /* 24px */
+  --space-10: 2rem;     /* 32px */
+  --space-11: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-14: 4rem;     /* 64px */
+
+  /* ─── Border Radius ────────────────────────────────────────────────────── */
+  --radius-pill: 999px;               /* Buttons, chips */
+  --radius-sm: 18px;                  /* Small cards */
+  --radius-md: 20px;                  /* Stats items */
+  --radius-lg: 22px;                  /* Session meta */
+  --radius-xl: 24px;                  /* Portraits, empty states */
+  --radius-2xl: 28px;                 /* Main cards */
+
+  /* ─── Shadows ──────────────────────────────────────────────────────────── */
+  --shadow-sm: 0 14px 30px rgba(59, 130, 246, 0.18);    /* Chip hover */
+  --shadow-md: 0 18px 35px rgba(37, 99, 235, 0.28);     /* Primary button */
+  --shadow-lg: 0 24px 48px rgba(0, 0, 0, 0.12);         /* Speaker cards */
+  --shadow-xl: 0 28px 55px rgba(15, 23, 42, 0.08);      /* Main cards */
+
+  /* ─── Focus Ring (Accessibility) ───────────────────────────────────────── */
+  --focus-ring-color: #2563eb;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring: var(--focus-ring-width) solid var(--focus-ring-color);
+
+  /* ─── Transitions ──────────────────────────────────────────────────────── */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   BASE RESET
+   ══════════════════════════════════════════════════════════════════════════ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  background: var(--color-bg-page);
+  color: var(--color-text-heading);
+  font-family: var(--font-family-sans);
+  line-height: var(--line-height-relaxed);
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   GLOBAL FOCUS STYLES (WCAG AA)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   SHARED UTILITY CLASSES
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── Buttons ────────────────────────────────────────────────────────────── */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.8rem 1.3rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-weight: var(--font-weight-extrabold);
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.button:hover,
+.button:focus-visible {
+  transform: translateY(-1px);
+}
+
+.button.primary {
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-gradient-start),
+    var(--color-primary-gradient-mid) 55%,
+    var(--color-primary-gradient-end)
+  );
+  color: #ffffff;
+  box-shadow: var(--shadow-md);
+}
+
+.button.secondary {
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--color-text-heading);
+  box-shadow: inset 0 0 0 1px var(--color-border-button);
+}
+
+/* ─── Eyebrow / Section Label ────────────────────────────────────────────── */
+
+.eyebrow {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  color: var(--color-primary-light);
+}
+
+/* ─── Panel Label (smaller variant) ──────────────────────────────────────── */
+
+.panel-label {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-extrabold);
+  letter-spacing: var(--letter-spacing-widest);
+  text-transform: uppercase;
+  color: var(--color-primary-light);
+}
+
+/* ─── Breadcrumbs ────────────────────────────────────────────────────────── */
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-base);
+  color: var(--color-text-subtle);
+}
+
+.breadcrumbs a {
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover,
+.breadcrumbs a:focus-visible {
+  text-decoration: underline;
+}
+
+/* ─── Page Hero ──────────────────────────────────────────────────────────── */
+
+.page-hero {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-10) 0 var(--space-11);
+}
+
+/* ─── Page Container ─────────────────────────────────────────────────────── */
+
+.page-container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-9) var(--space-14);
+}
+
+/* ─── Card Base ──────────────────────────────────────────────────────────── */
+
+.card {
+  padding: var(--space-9);
+  border-radius: var(--radius-2xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-xl);
+}
+
+.card-elevated {
+  padding: var(--space-9);
+  border-radius: var(--radius-2xl);
+  background: var(--color-bg-card);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─── Empty State ────────────────────────────────────────────────────────── */
+
+.empty-state {
+  padding: var(--space-10);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-card-alt);
+  box-shadow: var(--shadow-xl);
+}
+
+.empty-state h2,
+.empty-state h3,
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state p {
+  margin-top: var(--space-4);
+  color: var(--color-text-muted);
+}
+
+/* ─── Lede Paragraph ─────────────────────────────────────────────────────── */
+
+.lede {
+  margin: 0;
+  max-width: 64ch;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+}
+
+/* ─── Text Link (underlined) ─────────────────────────────────────────────── */
+
+.text-link,
+.panel-link {
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* ─── Inline Link ────────────────────────────────────────────────────────── */
+
+.inline-link {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+/* ─── Chip / Pill Links ──────────────────────────────────────────────────── */
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 0.95rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-bg-chip);
+  color: var(--color-text-dark);
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.chip:hover,
+.chip:focus-visible {
+  background: var(--color-bg-chip-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+/* ─── Stats Gradient Background ──────────────────────────────────────────── */
+
+.gradient-light {
+  background: linear-gradient(
+    160deg,
+    var(--color-bg-gradient-start),
+    var(--color-bg-gradient-mid) 60%,
+    var(--color-bg-gradient-end)
+  );
+}
+
+/* ─── Visually Hidden (for screen readers) ───────────────────────────────── */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

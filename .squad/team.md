@@ -17,6 +17,7 @@
 | Chewie | Content Systems Dev | `.squad/agents/chewie/charter.md` | Active |
 | Luke | Content & Docs | `.squad/agents/luke/charter.md` | Active |
 | Wedge | Tester | `.squad/agents/wedge/charter.md` | Active |
+| Padmé | Designer | `.squad/agents/padme/charter.md` | Active |
 | Scribe | Session Logger | `.squad/agents/scribe/charter.md` | Active |
 | Ralph | Work Monitor | — | Active |
 

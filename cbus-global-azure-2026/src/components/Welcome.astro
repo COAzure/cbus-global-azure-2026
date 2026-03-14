@@ -109,7 +109,7 @@ const scheduleRows: ScheduleRow[] = [
               Global Azure Columbus is hosted by <a href="https://www.meetup.com/central-ohio-azure/" target="_blank" rel="noopener noreferrer">Azure Columbus</a>, your local Azure user group.
             </p>
             <p>
-              💬 Join the <a href="https://discord.gg/w2F9KS3HCs" target="_blank" rel="noopener noreferrer">Azure Columbus community on Discord</a>.
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="vertical-align: middle; margin-right: 0.3em;"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>Join the <a href="https://discord.gg/w2F9KS3HCs" target="_blank" rel="noopener noreferrer">Azure Columbus community on Discord</a>.
             </p>
           </div>
         </div>
@@ -123,7 +123,8 @@ const scheduleRows: ScheduleRow[] = [
           useful guidance on delivering solutions on the Microsoft Azure platform.
         </p>
         <div class="actions">
-          <a class="button primary" href={`${import.meta.env.BASE_URL}agenda/`}>View agenda</a>
+          <a class="button primary" href="https://www.meetup.com/central-ohio-azure/events/313484939/" target="_blank" rel="noopener noreferrer">Register</a>
+          <a class="button secondary" href={`${import.meta.env.BASE_URL}agenda/`}>View agenda</a>
           <a class="button secondary" href={`${import.meta.env.BASE_URL}speakers/`}>Meet the speakers</a>
         </div>
       </section>
@@ -191,7 +192,7 @@ const scheduleRows: ScheduleRow[] = [
                     </ul>
                   )}
                 </td>
-                <td class="col-room">{row.room}</td>
+                <td class="col-room">{row.room || '—'}</td>
               </tr>
             ))}
           </tbody>
@@ -223,7 +224,7 @@ const scheduleRows: ScheduleRow[] = [
                 <h3>
                   <a href={`${import.meta.env.BASE_URL}speakers/${speaker.slug}/`}>{speaker.name}</a>
                 </h3>
-                <p>{speaker.bio}</p>
+                <p class="speaker-bio">{speaker.bio}</p>
                 <SpeakerSocialLinks
                   linkedin={speaker.linkedin}
                   github={speaker.github}
@@ -265,7 +266,7 @@ const scheduleRows: ScheduleRow[] = [
   .homepage {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 1.5rem 1.5rem 4rem;
+    padding: var(--space-9) var(--space-9) var(--space-14);
   }
 
   .topbar,
@@ -278,12 +279,12 @@ const scheduleRows: ScheduleRow[] = [
   .speaker-card,
   .cta-panel {
     display: grid;
-    gap: 1rem;
+    gap: var(--space-6);
   }
 
   .speaker-content {
     display: grid;
-    gap: 1rem;
+    gap: var(--space-6);
     min-width: 0;
     overflow: hidden;
   }
@@ -297,55 +298,47 @@ const scheduleRows: ScheduleRow[] = [
   .hero-top {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: var(--space-8);
   }
 
   .hero {
     display: grid;
-    gap: 2rem;
-    padding: 1rem 0 2.5rem;
+    gap: var(--space-10);
+    padding: var(--space-6) 0 var(--space-11);
   }
 
   .topbar {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 1rem;
+    gap: var(--space-6);
   }
 
   .brand,
   .nav-links a,
-  .text-link,
-  .panel-link,
   .speaker-content h3 a {
     text-decoration: none;
   }
 
   .brand {
-    font-size: 1rem;
-    font-weight: 800;
-    letter-spacing: 0.08em;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: var(--letter-spacing-tight);
     text-transform: uppercase;
   }
 
   .nav-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: var(--space-6);
   }
 
-  .nav-links a,
-  .panel-link,
-  .text-link {
-    font-weight: 700;
-    color: #1d4ed8;
+  .nav-links a {
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
   }
 
   .nav-links a:hover,
   .nav-links a:focus-visible,
-  .text-link:hover,
-  .text-link:focus-visible,
-  .panel-link:hover,
-  .panel-link:focus-visible,
   .speaker-content h3 a:hover,
   .speaker-content h3 a:focus-visible {
     text-decoration: underline;
@@ -353,17 +346,7 @@ const scheduleRows: ScheduleRow[] = [
 
   .hero-grid {
     display: grid;
-    gap: 1.5rem;
-  }
-
-  .eyebrow,
-  .panel-label {
-    margin: 0;
-    font-size: 0.82rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: #2563eb;
+    gap: var(--space-9);
   }
 
   h1,
@@ -385,25 +368,25 @@ const scheduleRows: ScheduleRow[] = [
     height: auto;
     object-fit: contain;
     display: block;
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
   }
 
   h1 {
     max-width: 40ch;
-    font-size: clamp(1.15rem, 2vw, 1.4rem);
-    line-height: 1.4;
-    font-weight: 600;
-    color: #35506b;
+    font-size: clamp(var(--font-size-h1-min), 2vw, var(--font-size-h1-max));
+    line-height: var(--line-height-normal);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-heading);
   }
 
   h2 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    line-height: 1;
+    font-size: clamp(var(--font-size-h2-min), 4vw, var(--font-size-h2-max));
+    line-height: var(--line-height-snug);
   }
 
   h3 {
-    font-size: clamp(1.4rem, 2vw, 1.8rem);
-    line-height: 1.1;
+    font-size: clamp(var(--font-size-h3-min), 2vw, var(--font-size-h3-max));
+    line-height: var(--line-height-compact);
   }
 
   .lede,
@@ -413,65 +396,27 @@ const scheduleRows: ScheduleRow[] = [
   .speaker-content p,
   .session-room,
   .cta-panel > p {
-    color: #35506b;
-  }
-
-  .lede {
-    max-width: 62ch;
-    font-size: 1.1rem;
+    color: var(--color-text-muted);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 0.5rem;
-  }
-
-  .button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 3rem;
-    padding: 0.8rem 1.3rem;
-    border-radius: 999px;
-    font-weight: 800;
-    text-decoration: none;
-    transition:
-      transform 0.2s ease,
-      box-shadow 0.2s ease,
-      background 0.2s ease,
-      color 0.2s ease;
-  }
-
-  .button:hover,
-  .button:focus-visible {
-    transform: translateY(-1px);
-  }
-
-  .button.primary {
-    background: linear-gradient(135deg, #1d4ed8, #2563eb 55%, #38bdf8);
-    color: #ffffff;
-    box-shadow: 0 18px 35px rgba(37, 99, 235, 0.28);
-  }
-
-  .button.secondary {
-    background: rgba(255, 255, 255, 0.88);
-    color: #16324f;
-    box-shadow: inset 0 0 0 1px #c7d8ec;
+    gap: var(--space-6);
+    margin-top: var(--space-3);
   }
 
   .host-card {
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 1.1rem;
-    padding: 1rem 1.1rem;
-    border-radius: 24px;
-    background: #ffffff;
+    gap: var(--space-7);
+    padding: var(--space-6) var(--space-7);
+    border-radius: var(--radius-xl);
+    background: var(--color-bg-card-solid);
   }
 
   .host-copy {
-    gap: 0.35rem;
+    gap: var(--space-2);
     align-content: start;
   }
 
@@ -487,24 +432,23 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .host-title {
-    font-size: 1.2rem;
-    font-weight: 800;
-    color: #16324f;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-text-heading);
   }
 
   .host-copy p:last-child {
-    color: #35506b;
+    color: var(--color-text-body);
   }
 
   .hero-panel,
   .speaker-card,
   .cta-panel,
-  .empty-state,
   .schedule-wrap {
-    padding: 1.5rem;
-    border-radius: 28px;
-    background: rgba(255, 255, 255, 0.94);
-    box-shadow: 0 28px 55px rgba(15, 23, 42, 0.08);
+    padding: var(--space-9);
+    border-radius: var(--radius-2xl);
+    background: var(--color-bg-card);
+    box-shadow: var(--shadow-xl);
   }
 
   .stats,
@@ -517,39 +461,45 @@ const scheduleRows: ScheduleRow[] = [
   .stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
+    gap: var(--space-4);
   }
 
   .stats li {
     display: grid;
-    gap: 0.35rem;
-    padding: 0.85rem;
-    border-radius: 20px;
-    background: linear-gradient(160deg, #dbeafe, #eff6ff 60%, #ffffff);
+    gap: var(--space-2);
+    padding: var(--space-5);
+    border-radius: var(--radius-md);
+    background: linear-gradient(
+      160deg,
+      var(--color-bg-gradient-start),
+      var(--color-bg-gradient-mid) 60%,
+      var(--color-bg-gradient-end)
+    );
   }
 
   .stats strong {
-    font-size: 1.6rem;
-    line-height: 1;
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-height-snug);
+    color: var(--color-primary);
   }
 
   .stats span {
-    color: #35506b;
-    font-weight: 600;
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-semibold);
   }
 
   .content {
     display: grid;
-    gap: 2.5rem;
+    gap: var(--space-11);
   }
 
   .section {
-    gap: 1.5rem;
+    gap: var(--space-9);
   }
 
   .speaker-grid {
     display: grid;
-    gap: 1.25rem;
+    gap: var(--space-8);
   }
 
   /* ── Schedule table ─────────────────────────────────────────── */
@@ -562,25 +512,25 @@ const scheduleRows: ScheduleRow[] = [
   .schedule-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.95rem;
+    font-size: var(--font-size-base);
   }
 
   .schedule-table thead {
-    border-bottom: 2px solid #dbeafe;
+    border-bottom: 2px solid var(--color-border-header);
   }
 
   .schedule-table th {
-    padding: 0.85rem 1.1rem;
+    padding: var(--space-5) var(--space-7);
     text-align: left;
-    font-size: 0.78rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: var(--letter-spacing-wider);
     text-transform: uppercase;
-    color: #2563eb;
+    color: var(--color-primary-light);
   }
 
   .schedule-table tbody tr {
-    border-bottom: 1px solid #e8f0f8;
+    border-bottom: 1px solid var(--color-border-light);
   }
 
   .schedule-table tbody tr:last-child {
@@ -588,23 +538,23 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .schedule-table td {
-    padding: 0.9rem 1.1rem;
+    padding: var(--space-6) var(--space-8);
     vertical-align: top;
   }
 
   .row-session .col-time {
-    font-weight: 800;
-    color: #16324f;
+    font-weight: var(--font-weight-extrabold);
+    color: var(--color-text-heading);
     white-space: nowrap;
   }
 
   .row-session .row-title {
-    font-weight: 700;
-    color: #0f2942;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-dark);
   }
 
   a.row-title.session-link {
-    color: #1d4ed8;
+    color: var(--color-primary);
     text-decoration: none;
   }
 
@@ -614,40 +564,35 @@ const scheduleRows: ScheduleRow[] = [
   }
 
   .row-fixed {
-    background: #f8fafc;
+    background: var(--color-bg-fixed-row);
   }
 
   .row-fixed .col-time {
-    font-weight: 600;
-    color: #64748b;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-faded);
     white-space: nowrap;
   }
 
   .row-fixed .row-title {
-    color: #64748b;
-    font-weight: 600;
+    color: var(--color-text-faded);
+    font-weight: var(--font-weight-semibold);
   }
 
   .row-fixed .col-room {
-    color: #94a3b8;
+    color: var(--color-text-disabled);
   }
 
   .col-room {
-    color: #35506b;
+    color: var(--color-text-muted);
     white-space: nowrap;
-  }
-
-  .inline-link {
-    color: #1d4ed8;
-    font-weight: 700;
   }
 
   /* ── Speaker chips (inside table) ───────────────────────────── */
   .speaker-chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
-    padding-top: 0.25rem;
+    gap: var(--space-4);
+    padding-top: var(--space-1);
   }
 
   .speaker-chips a {
@@ -655,21 +600,21 @@ const scheduleRows: ScheduleRow[] = [
     align-items: center;
     justify-content: center;
     padding: 0.65rem 0.95rem;
-    border-radius: 999px;
-    background: #e2ecf8;
-    color: #0f2942;
-    font-weight: 700;
+    border-radius: var(--radius-pill);
+    background: var(--color-bg-chip);
+    color: var(--color-text-dark);
+    font-weight: var(--font-weight-bold);
     text-decoration: none;
     transition:
-      transform 0.2s ease,
-      background 0.2s ease,
-      box-shadow 0.2s ease;
+      transform var(--transition-fast),
+      background var(--transition-fast),
+      box-shadow var(--transition-fast);
   }
 
   .speaker-chips a:hover,
   .speaker-chips a:focus-visible {
-    background: #c9def5;
-    box-shadow: 0 14px 30px rgba(59, 130, 246, 0.18);
+    background: var(--color-bg-chip-hover);
+    box-shadow: var(--shadow-sm);
     transform: translateY(-1px);
   }
 
@@ -677,17 +622,23 @@ const scheduleRows: ScheduleRow[] = [
     align-content: start;
   }
 
+  .speaker-bio {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    line-clamp: 3;
+    box-orient: vertical;
+    overflow: hidden;
+  }
+
   .speaker-portrait-link {
     text-decoration: none;
   }
 
-  .empty-state h3,
-  .empty-state p {
-    margin: 0;
-  }
+  /* ── Speaker card shadow ────────────────────────────────────── */
 
-  .empty-state p {
-    color: #35506b;
+  .speaker-card {
+    box-shadow: var(--shadow-lg);
   }
 
   @media (min-width: 720px) {
@@ -700,7 +651,7 @@ const scheduleRows: ScheduleRow[] = [
       grid-column: 1 / -1;
       flex-direction: row;
       align-items: stretch;
-      gap: 2rem;
+      gap: var(--space-10);
     }
 
     .hero-top .event-logo {
@@ -728,11 +679,15 @@ const scheduleRows: ScheduleRow[] = [
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
       align-items: center;
     }
+
+    .cta-panel .actions {
+      align-self: start;
+    }
   }
 
   @media (max-width: 719px) {
     .homepage {
-      padding-top: 1rem;
+      padding-top: var(--space-6);
     }
 
     .topbar {
@@ -751,7 +706,7 @@ const scheduleRows: ScheduleRow[] = [
 
   @media (max-width: 520px) {
     .homepage {
-      padding-inline: 1rem;
+      padding-inline: var(--space-6);
     }
 
     .stats {
@@ -764,6 +719,11 @@ const scheduleRows: ScheduleRow[] = [
 
     .actions.compact .button {
       flex: 1 1 100%;
+    }
+
+    .schedule-table .col-room,
+    .schedule-table th:last-child {
+      display: none;
     }
   }
 </style>

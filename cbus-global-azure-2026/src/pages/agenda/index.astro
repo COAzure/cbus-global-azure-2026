@@ -141,40 +141,22 @@ const sessionsByDay = Array.from(
   .page {
     max-width: 1120px;
     margin: 0 auto;
-    padding: 3rem 1.5rem 4rem;
+    padding: var(--space-12) var(--space-9) var(--space-14);
   }
 
   .hero {
     display: grid;
-    gap: 1rem;
-    padding: 2rem 0 2.5rem;
+    gap: var(--space-6);
+    padding: var(--space-10) 0 var(--space-11);
   }
 
-  .breadcrumbs {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.95rem;
-    color: #4f6b88;
-  }
-
-  .breadcrumbs a {
-    text-decoration: none;
-  }
-
-  .breadcrumbs a:hover,
-  .breadcrumbs a:focus-visible {
-    text-decoration: underline;
-  }
-
-  .eyebrow,
   .day-label {
     margin: 0;
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.16em;
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-extrabold);
+    letter-spacing: var(--letter-spacing-widest);
     text-transform: uppercase;
-    color: #2563eb;
+    color: var(--color-primary-light);
   }
 
   h1,
@@ -190,58 +172,40 @@ const sessionsByDay = Array.from(
   h1 {
     max-width: 12ch;
     font-size: clamp(2.8rem, 7vw, 4.5rem);
-    line-height: 0.95;
+    line-height: var(--line-height-tight);
   }
 
-  .lede,
   .timezone,
-  .day-count,
-  .empty-state p {
-    color: #35506b;
-  }
-
-  .lede {
-    max-width: 64ch;
-    font-size: 1.1rem;
+  .day-count {
+    color: var(--color-text-muted);
   }
 
   .timezone {
-    font-weight: 600;
+    font-weight: var(--font-weight-semibold);
   }
 
   .agenda-days {
     display: grid;
-    gap: 2rem;
+    gap: var(--space-10);
   }
 
   .day-section {
     display: grid;
-    gap: 1.5rem;
+    gap: var(--space-9);
   }
 
   .day-header {
     display: grid;
-    gap: 0.5rem;
+    gap: var(--space-3);
   }
 
   h2 {
     font-size: clamp(1.9rem, 3vw, 2.6rem);
-    line-height: 1;
+    line-height: var(--line-height-snug);
   }
 
   .session-list {
     display: grid;
-    gap: 1.25rem;
-  }
-
-  .empty-state {
-    padding: 2rem;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.92);
-    box-shadow: 0 28px 55px rgba(15, 23, 42, 0.08);
-  }
-
-  .empty-state p {
-    margin-top: 0.75rem;
+    gap: var(--space-8);
   }
 </style>
