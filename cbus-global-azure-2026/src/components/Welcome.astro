@@ -8,6 +8,7 @@ interface SessionSpeaker {
 }
 
 interface AgendaSession {
+  id: string;
   title: string;
   timeLabel: string;
   timeMs: number;
@@ -22,6 +23,7 @@ interface FeaturedSpeaker {
   photo: string;
   linkedin: string;
   github: string;
+  blog?: string;
 }
 
 interface Props {
@@ -49,6 +51,7 @@ interface ScheduleRow {
   room: string;
   speakers: SessionSpeaker[];
   isFixed: boolean;
+  id?: string;
 }
 
 const FIXED_ROWS: ScheduleRow[] = [
@@ -163,7 +166,11 @@ const scheduleRows: ScheduleRow[] = [
               <tr class={row.isFixed ? 'row-fixed' : 'row-session'}>
                 <td class="col-time">{row.timeLabel}</td>
                 <td class="col-title">
-                  <span class="row-title">{row.title}</span>
+                  {!row.isFixed && row.id ? (
+                    <a class="row-title session-link" href={`${import.meta.env.BASE_URL}agenda/#${row.id}`}>{row.title}</a>
+                  ) : (
+                    <span class="row-title">{row.title}</span>
+                  )}
                   {!row.isFixed && row.speakers.length > 0 && (
                     <ul class="speaker-chips" aria-label={`${row.title} speakers`}>
                       {row.speakers.map((speaker) => (
@@ -210,6 +217,7 @@ const scheduleRows: ScheduleRow[] = [
                 <SpeakerSocialLinks
                   linkedin={speaker.linkedin}
                   github={speaker.github}
+                  blog={speaker.blog}
                   compact
                 />
               </div>
@@ -583,6 +591,16 @@ const scheduleRows: ScheduleRow[] = [
   .row-session .row-title {
     font-weight: 700;
     color: #0f2942;
+  }
+
+  a.row-title.session-link {
+    color: #1d4ed8;
+    text-decoration: none;
+  }
+
+  a.row-title.session-link:hover,
+  a.row-title.session-link:focus-visible {
+    text-decoration: underline;
   }
 
   .row-fixed {

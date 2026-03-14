@@ -10,13 +10,14 @@ interface Props {
   room: string;
   speakers?: SpeakerLink[];
   hasDescription?: boolean;
+  id?: string;
 }
 
-const { title, timeLabel, room, speakers = [], hasDescription = false } = Astro.props;
+const { title, timeLabel, room, speakers = [], hasDescription = false, id } = Astro.props;
 const hasSpeakers = speakers.length > 0;
 ---
 
-<article class="session-card">
+<article class="session-card" id={id}>
   <div class="meta" aria-label={`Session starts at ${timeLabel}`}>
     <p class="meta-label">Start time</p>
     <p class="time">{timeLabel}</p>

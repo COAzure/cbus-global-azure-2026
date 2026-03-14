@@ -44,7 +44,7 @@ const sessions: SessionItem[] = await Promise.all(
     const { Content } = await render(entry);
 
     return {
-      id: entry.id,
+      id: entry.id.replace(/\.md$/, ''),
       dayKey: entry.data.time.slice(0, 10),
       dayLabel: dateFormatter.format(startTime),
       title: entry.data.title,
@@ -110,6 +110,7 @@ const sessionsByDay = Array.from(
             <div class="session-list">
               {day.sessions.map((session) => (
                 <AgendaSessionCard
+                  id={session.id}
                   title={session.title}
                   timeLabel={session.timeLabel}
                   room={session.room}
