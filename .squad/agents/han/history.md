@@ -79,3 +79,27 @@ Han owns Astro UI, layouts, and page templates.
   13. **Discord SVG icon**: Replaced 💬 emoji with an inline SVG chat-bubble path (`aria-hidden="true"`) for consistent cross-platform rendering.
 - CSS pattern: when sharing a `text-decoration: none` rule across many selectors, it's cleaner to split out selectors that later need underlines than to add an override — avoids specificity fights.
 - Scoped Astro styles apply per-component; shadow overrides for `.speaker-card` defined in Welcome.astro correctly take precedence over the shared panel rule because the selector is more specific (matching the same specificity but declared later).
+- Migrated the homepage, agenda, and speaker components to the global design token system, replacing hardcoded colors/shadows/radii/fonts with CSS variables and dropping local utility class definitions that are now global.
+
+### 2026-03-14: CSS Token System Migration Implementation (Complete)
+
+**Task:** Implement Padmé's CSS token system spec across all 8 component/page files; validate with build.
+
+**Status:** ✅ All files migrated successfully  
+- 8 target files: Welcome.astro, agenda/index.astro, speakers/index.astro, speakers/[slug].astro, AgendaSessionCard.astro, SpeakerCard.astro, SpeakerPortrait.astro, SpeakerSocialLinks.astro
+- All hardcoded color/shadow/radius/font values replaced with `var(--token)` references
+- 8 duplicate utility classes removed from component scopes: `.button`, `.button.primary`, `.button.secondary`, `.eyebrow`, `.panel-label`, `.breadcrumbs`, `.lede`, `.empty-state`
+- Layout-specific classes retained and updated with token values
+- Preserved unique SpeakerPortrait gradient (tokenized radius/shadow only)
+- `.day-label` retained local (markup-dependent, out of scope for this pass)
+- Build verification: `npm run build` passed (9 pages, 0 errors)
+
+**Documentation:**
+- Implementation summary written: `.squad/decisions/inbox/han-token-migration.md`
+- Merged into `.squad/decisions.md` as Decision 13
+- Orchestration log: `.squad/orchestration-log/2026-03-14T17:51:30Z-han.md`
+
+**Outcomes:**
+- All 60+ global tokens now in use across site
+- Code duplication eliminated; single source of truth established
+- Ready for commit; no regressions or breaking changes

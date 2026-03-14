@@ -81,3 +81,67 @@ Padmé's 13 design improvement suggestions (identified 2026-03-14) were reviewed
 13. Discord emoji → inline SVG
 
 See `.squad/decisions.md` Decision 12 and `.squad/orchestration-log/` for full details.
+
+### 2026-03-14: CSS Token System Design
+
+**Task:** Create a shared CSS custom properties system to enable design consistency across all pages and components.
+
+**Findings:**
+- `global.css` already existed with comprehensive design tokens (created previously)
+- Layout.astro correctly imports `'../styles/global.css'`
+- All 8 target component files still have hardcoded color/shadow/radius values
+- Focus ring styles duplicated in Welcome.astro (should be removed, now global)
+
+**Token System Coverage:**
+- 24 color tokens (primary, text, background, border variants)
+- 12 typography tokens (sizes, weights, line-heights, letter-spacing)
+- 14 spacing tokens (space-1 through space-14)
+- 6 radius tokens (pill through 2xl)
+- 4 shadow tokens (sm through xl)
+- 4 focus/accessibility tokens
+- 2 transition tokens
+
+**Global Utility Classes Available:**
+- `.button`, `.button.primary`, `.button.secondary` — button styles
+- `.eyebrow`, `.panel-label` — section label typography
+- `.breadcrumbs` — navigation breadcrumb pattern
+- `.card`, `.card-elevated`, `.empty-state` — card patterns
+- `.lede` — lead paragraph style
+- `.text-link`, `.panel-link`, `.inline-link` — link variants
+- `.chip` — pill-shaped interactive element
+- `.gradient-light` — stats gradient background
+- `.visually-hidden` — screen reader utility
+
+**Design Spec Written:** `.squad/decisions/inbox/padme-token-system.md`
+- Complete token reference tables
+- Per-file migration instructions (8 files)
+- Search/replace mappings for hardcoded values
+- Implementation phasing recommendations
+
+**Key Migration Priorities:**
+1. Welcome.astro — most duplication, highest impact
+2. Agenda/Speakers pages — remove duplicate .breadcrumbs, .eyebrow, .lede
+3. Card components — standardize shadows and radii
+4. SpeakerSocialLinks — consider using global .chip class
+
+### 2026-03-14: CSS Token System Implementation (Complete)
+
+**Task:** Design spec handed off to Han for implementation; migration completed with build verification.
+
+**Status:** ✅ All 8 files migrated successfully  
+- All hardcoded colors replaced with token variables
+- 8 duplicate utility classes removed from component scopes
+- Layout-specific classes retained and tokenized
+- Build: `npm run build` passed (9 pages, 0 errors)
+
+**Documentation:**
+- Design spec written: `.squad/decisions/inbox/padme-token-system.md` (344 lines, comprehensive token reference + per-file migrations)
+- Merged into `.squad/decisions.md` as Decision 13
+- Orchestration log: `.squad/orchestration-log/2026-03-14T17:51:00Z-padme.md`
+
+**Outcomes:**
+- 60+ tokens now available globally
+- 10 global utility classes defined once, used everywhere
+- Single source of truth for all design values established
+- Foundation for future theming (dark mode, design extensions)
+- Site maintainability significantly improved

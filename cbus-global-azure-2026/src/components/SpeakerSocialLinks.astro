@@ -26,7 +26,7 @@ const links = [
 .social-links {
 display: flex;
 flex-wrap: wrap;
-gap: 0.75rem;
+gap: var(--space-4);
 list-style: none;
 margin: 0;
 padding: 0;
@@ -37,26 +37,26 @@ display: inline-flex;
 align-items: center;
 justify-content: center;
 padding: 0.7rem 1rem;
-border-radius: 999px;
-background: #e2ecf8;
-color: #0f2942;
-font-weight: 700;
+border-radius: var(--radius-pill);
+background: var(--color-bg-chip);
+color: var(--color-text-dark);
+font-weight: var(--font-weight-bold);
 text-decoration: none;
 transition:
-transform 0.2s ease,
-background 0.2s ease,
-box-shadow 0.2s ease;
+transform var(--transition-fast),
+background var(--transition-fast),
+box-shadow var(--transition-fast);
 }
 
 .social-links a:hover,
 .social-links a:focus-visible {
-background: #c9def5;
-box-shadow: 0 14px 30px rgba(59, 130, 246, 0.18);
+background: var(--color-bg-chip-hover);
+box-shadow: var(--shadow-sm);
 transform: translateY(-1px);
 }
 
 .social-links.compact a {
 padding: 0.6rem 0.9rem;
-font-size: 0.95rem;
+font-size: var(--font-size-base);
 }
 </style>

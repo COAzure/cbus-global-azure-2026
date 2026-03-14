@@ -35,10 +35,10 @@ const hasPhoto = existsSync(path.resolve(process.cwd(), 'public', 'speakers', ph
 
 <style>
   .portrait {
-    border-radius: 24px;
+    border-radius: var(--radius-xl);
     overflow: hidden;
     background: linear-gradient(135deg, #dbeafe, #bfdbfe 55%, #93c5fd);
-    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-lg);
   }
 
   .portrait.card {
@@ -78,7 +78,7 @@ const hasPhoto = existsSync(path.resolve(process.cwd(), 'public', 'speakers', ph
     justify-content: center;
     width: 4.5rem;
     height: 4.5rem;
-    border-radius: 999px;
+    border-radius: var(--radius-pill);
     background: rgba(15, 23, 42, 0.08);
     font-size: 1.5rem;
     font-weight: 700;
