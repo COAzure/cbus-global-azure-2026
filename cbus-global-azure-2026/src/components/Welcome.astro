@@ -52,9 +52,9 @@ interface ScheduleRow {
 }
 
 const FIXED_ROWS: ScheduleRow[] = [
-  { timeMs: new Date('2026-05-15T09:30:00-04:00').getTime(), timeLabel: '9:30 AM', title: 'Doors Open', room: 'Lobby', speakers: [], isFixed: true },
-  { timeMs: new Date('2026-05-15T12:00:00-04:00').getTime(), timeLabel: '12:00 PM', title: 'Lunch', room: 'Dining Area', speakers: [], isFixed: true },
-  { timeMs: new Date('2026-05-15T16:00:00-04:00').getTime(), timeLabel: '4:00 PM', title: 'End of Day', room: '', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T09:30:00-04:00').getTime(), timeLabel: '9:30 AM', title: 'Doors Open', room: 'Lobby', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T12:00:00-04:00').getTime(), timeLabel: '12:00 PM', title: 'Lunch', room: 'Dining Area', speakers: [], isFixed: true },
+  { timeMs: new Date('2026-04-18T16:00:00-04:00').getTime(), timeLabel: '4:00 PM', title: 'End of Day', room: '', speakers: [], isFixed: true },
 ];
 
 const scheduleRows: ScheduleRow[] = [
@@ -74,7 +74,7 @@ const scheduleRows: ScheduleRow[] = [
     </nav>
 
     <div class="hero-grid">
-      <section class="hero-copy" aria-labelledby="homepage-title">
+      <div class="hero-top">
         <img
           class="event-logo"
           src="/GlobalAzure2026.png"
@@ -82,16 +82,6 @@ const scheduleRows: ScheduleRow[] = [
           loading="eager"
           decoding="async"
         />
-        <p class="eyebrow">Community conference · {conferenceDate}</p>
-        <h1 id="homepage-title">Spend the day with Azure builders who keep cloud work practical.</h1>
-        <p class="lede">
-          Global Azure Columbus 2026 is a community-led event built for attendees who want clear,
-          useful guidance on delivering solutions on the Microsoft Azure platform.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="/agenda/">View agenda</a>
-          <a class="button secondary" href="/speakers/">Meet the speakers</a>
-        </div>
         <div class="host-card">
           <img
             class="host-logo"
@@ -109,6 +99,19 @@ const scheduleRows: ScheduleRow[] = [
               Global Azure Columbus is hosted by Azure Columbus, your local Azure user group.
             </p>
           </div>
+        </div>
+      </div>
+
+      <section class="hero-copy" aria-labelledby="homepage-title">
+        <p class="eyebrow">Community conference · {conferenceDate}</p>
+        <h1 id="homepage-title">Spend the day with Azure builders who keep cloud work practical.</h1>
+        <p class="lede">
+          Global Azure Columbus 2026 is a community-led event built for attendees who want clear,
+          useful guidance on delivering solutions on the Microsoft Azure platform.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="/agenda/">View agenda</a>
+          <a class="button secondary" href="/speakers/">Meet the speakers</a>
         </div>
       </section>
 
@@ -271,6 +274,12 @@ const scheduleRows: ScheduleRow[] = [
   .speaker-content h3 a {
     overflow-wrap: break-word;
     word-break: break-word;
+  }
+
+  .hero-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
   }
 
   .hero {
@@ -438,11 +447,9 @@ const scheduleRows: ScheduleRow[] = [
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 1.1rem;
-    margin-top: 0.5rem;
     padding: 1rem 1.1rem;
     border-radius: 24px;
-    background: linear-gradient(135deg, rgba(219, 234, 254, 0.95), rgba(255, 255, 255, 0.96));
-    box-shadow: 0 20px 44px rgba(37, 99, 235, 0.12);
+    background: #ffffff;
   }
 
   .host-copy {
@@ -661,12 +668,32 @@ const scheduleRows: ScheduleRow[] = [
       align-items: start;
     }
 
+    .hero-top {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      align-items: stretch;
+      gap: 2rem;
+    }
+
+    .hero-top .event-logo {
+      flex: 0 0 auto;
+      height: 100%;
+      object-fit: contain;
+      align-self: stretch;
+    }
+
+    .hero-top .host-card {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+    }
+
     .speaker-grid {
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
     }
 
     .speaker-card {
-      grid-template-columns: minmax(180px, 220px) minmax(0, 1fr);
+      grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
     }
 
     .cta-panel {

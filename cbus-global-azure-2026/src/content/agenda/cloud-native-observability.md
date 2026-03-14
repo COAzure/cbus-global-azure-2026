@@ -1,6 +1,6 @@
 ---
-title: "Cloud-Native Observability in Practice"
-time: "2026-05-15T13:30:00-04:00"
+title: "somethign epic"
+time: "2026-04-18T13:30:00-04:00"
 room: "Room 204"
 speakers:
   - "michael-collier"
