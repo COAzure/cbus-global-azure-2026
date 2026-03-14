@@ -92,12 +92,68 @@ speakers:
 Optional session description here.
 ```
 
+
+### 5. Collection-Driven Speaker Pages
+
+**Files:** `src/pages/speakers/index.astro`, `src/pages/speakers/[slug].astro`, `src/components/SpeakerPortrait.astro`
+
+- Build speaker listing/detail pages from `getCollection('speakers')` rather than duplicating data in page files.
+- For dynamic routes, derive the URL segment from `entry.id.replace(/\.md$/, '')` so the route matches the Markdown filename without the extension.
+- When speaker photos are stored in `public/speakers/`, you can check for file existence at build time inside an Astro component and render a lightweight initials placeholder if the asset has not been added yet.
+
+```astro
+---
+const speakers = (await getCollection('speakers')).map((entry) => ({
+  ...entry,
+  pageSlug: entry.id.replace(/\.md$/, ''),
+}));
+---
+
+{speakers.map((speaker) => <SpeakerCard slug={speaker.pageSlug} {...speaker.data} />)}
+```
+
+### 6. Resolving Referenced Entries for Agenda Pages
+
+**Files:** `src/pages/agenda/index.astro`, `src/components/AgendaSessionCard.astro`
+
+- When an agenda collection stores `speakers` as `reference('speakers')[]`, resolve the related speaker entries with `getEntries(entry.data.speakers)`.
+- Map each resolved speaker to a UI-friendly shape that includes `name` and a page slug derived from `speaker.id.replace(/\.md$/, '')`.
+- For schedule pages rendered at build time, format event times with an explicit conference timezone so static output does not depend on the build machine timezone.
+
+```astro
+---
+import { getCollection, getEntries } from 'astro:content';
+
+const timeFormatter = new Intl.DateTimeFormat('en-US', {
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZone: 'America/New_York',
+});
+
+const sessions = await Promise.all(
+  (await getCollection('agenda')).map(async (entry) => {
+    const speakers = await getEntries(entry.data.speakers);
+
+    return {
+      title: entry.data.title,
+      timeLabel: timeFormatter.format(new Date(entry.data.time)),
+      speakers: speakers.map((speaker) => ({
+        name: speaker.data.name,
+        slug: speaker.id.replace(/\.md$/, ''),
+      })),
+    };
+  }),
+);
+---
+```
+
 ## Anti-Patterns
 
 - **Don't use `src/content/config.ts` on Astro 6** — Astro treats it as a legacy config path and fails the build.
 - **Don't omit collection loaders** — every collection needs a loader in Astro 6.
 - **Don't store speaker photos in `src/assets/`** — use `public/speakers/` so editors can drop files there easily.
 - **Don't hardcode speaker data** — always query collections with `getCollection()`.
+- **Don't format conference schedule times with the server default timezone** — static builds may run in UTC and show the wrong local session times.
 
 ## File Locations (Global Azure 2026)
 

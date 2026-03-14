@@ -69,6 +69,23 @@ room: string
 speakers: string[] (speaker slugs)
 ```
 
+### 2. Speaker Route Derivation Strategy
+**Date:** 2026-03-14  
+**Reviewed by:** Han  
+**Status:** ✅ Implemented (Phase 3 Complete)
+
+**Decision:** Speaker routes are generated from content collection entry IDs with the Markdown extension removed (`entry.id.replace(/\.md$/, '')`) instead of relying on a `slug` property.
+
+**Rationale:**
+- Keeps page URLs stable as long as content filenames remain stable
+- No need to maintain parallel slug fields in frontmatter
+- Direct mapping between filesystem and URL structure
+- Simpler content maintenance
+
+**Implementation:**
+- Speaker pages: `[slug].astro` derives params from `entry.id.replace(/\.md$/, '')`
+- Photo fallback: Missing photos show initials-based placeholder instead of failing
+
 ---
 
 ## Governance
