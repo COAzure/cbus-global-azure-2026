@@ -52,3 +52,5 @@ Han owns Astro UI, layouts, and page templates.
 - The `dayCount` calculation used a `Set` that could produce `0` when `agendaEntries` is empty — added `|| 1` fallback to keep the stat from showing "0 days".
 - Speaker chips inside the table link to `/speakers/{slug}/` for content-driven session rows; fixed rows have no speaker chips, so the empty `speakers: []` array on those rows is never rendered.
 - Table styling uses two row classes (`row-session`, `row-fixed`) to visually differentiate conference sessions from schedule anchors — fixed rows get muted gray text so they read as structural dividers rather than sessions.
+- Logo placement inside the hero requires clear brand hierarchy: logo at top (primary signal) → eyebrow (secondary date context) → h1 (tagline at body-copy scale). The visual reduction works when paired with semantic `<h1>` retention.
+- CSS border-radius on `.event-logo` aligns logo aesthetic with the card-based design system used elsewhere on the site; 24px radius matches existing card rounding.

@@ -161,6 +161,40 @@ speakers: string[] (speaker slugs)
 - `src/components/Welcome.astro` — Replaced Featured Sessions section; added schedule table markup and styles; updated interfaces and frontmatter
 - `src/pages/index.astro` — Renamed interface and prop; added `timeMs` computation; updated `<Welcome>` prop
 
+### 6. Global Azure 2026 Logo Placement in Hero
+**Date:** 2026-03-14  
+**Author:** Han  
+**Status:** ✅ Implemented
+
+**Context:** Michael requested the `GlobalAzure2026.png` image be placed near the top of the homepage hero, with the tagline headline made visually subordinate to the logo.
+
+**Decision:** Place the `GlobalAzure2026.png` logo at the very top of the `.hero-copy` section — above the eyebrow date label and h1. The h1 headline ("Spend the day with Azure builders…") is visually shrunk to ~1.3–1.4rem while keeping its `<h1>` tag for accessibility and SEO. Add `border-radius: 24px` to `.event-logo` to align with site card design aesthetic.
+
+**Rationale:**
+- The logo is the primary brand signal on first load; everything else should support it, not compete
+- The eyebrow staying just below the logo provides date context without visual noise
+- Keeping `<h1>` semantics satisfies screen-reader users and search engines even though visual size is reduced to ~22px
+- Border-radius matches card design patterns throughout the site
+
+**DOM Order (inside `.hero-copy`):**
+1. `<img class="event-logo" src="/GlobalAzure2026.png">` — prominent event branding
+2. `<p class="eyebrow">` — date label as secondary context
+3. `<h1>` — tagline at small body-copy scale
+4. Lede paragraph, actions, host card (unchanged)
+
+**CSS Changes:**
+- `.event-logo`: `width: clamp(200px, 55%, 360px)`, `border-radius: 24px`
+- `h1`: `font-size: clamp(1.15rem, 2vw, 1.4rem)`, `font-weight: 600`, `color: #35506b`
+
+**Verification:**
+- GlobalAzure2026.png found in DOM with correct src ✅
+- h1 text confirmed present ✅
+- Computed font-size: 22.4px (≈ 1.4rem) ✅
+- Build clean across 8 pages ✅
+
+**Files Updated:**
+- `src/components/Welcome.astro` — Logo placement, h1 override, event-logo styling with border-radius
+
 ---
 
 ## Governance
