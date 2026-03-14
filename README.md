@@ -23,7 +23,7 @@ This monorepo contains the conference website built with [Astro](https://astro.b
    npm run dev
    ```
 
-The site will be available at `http://localhost:3000`.
+The site will be available at `http://localhost:4321`.
 
 ## Community
 
