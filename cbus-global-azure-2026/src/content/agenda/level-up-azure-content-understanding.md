@@ -1,5 +1,5 @@
 ---
-title: "Level-up your document processing game with Azure Content Understanding. "
+title: "Level-up your document processing game with Azure Content Understanding"
 time: "2026-04-18T13:00:00-04:00"
 room: "Main Stage"
 speakers:
